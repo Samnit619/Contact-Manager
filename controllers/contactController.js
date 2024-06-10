@@ -20,7 +20,7 @@ const createContact = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("All field are mandatory! ");
   }
-  const contact = await Contact.create({
+  const contact = await  Contact.create({
     user_id: req.user.id,
     name,
     email,
@@ -54,6 +54,11 @@ const updateContact = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Can't find the contact with the given id.");
   }
+
+  if(contact.user_id.toString() !== req.user.id){
+    res.status(403);
+    throw new Error("You don't have the permission to access this contact");
+  }
   const updateContact = await Contact.findByIdAndUpdate(
     req.params.id,
     req.body,
@@ -74,6 +79,11 @@ const deleteContact = asyncHandler(async (req, res) => {
     if (!contact) {
       res.status(404);
       throw new Error("Can't find the contact with the given id.");
+    }
+    
+    if(contact.user_id.toString() !== req.user.id){
+      res.status(403);
+      throw new Error("You don't have the permission to access this contact");
     }
 
     await contact.deleteOne();
