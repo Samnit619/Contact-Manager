@@ -6,7 +6,10 @@ function App() {
 
 
   return (
-    {NavBar}
+    <div className=' bg-slate-400'>
+
+      <NavBar/>
+    </div>
   )
 }
 
