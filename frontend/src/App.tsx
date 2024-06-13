@@ -1,12 +1,12 @@
-
+import NavBar from "./components/NavBar";
 
 function App() {
- 
-
   return (
-  <div className="text-3xl bg-red-50">hello</div>
-      
+  <div className="">
+      <NavBar/>
+  </div>
+
   )
 }
 
-export default App
+export default App;
