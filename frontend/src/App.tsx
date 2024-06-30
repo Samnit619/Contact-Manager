@@ -1,10 +1,15 @@
-import { ThemeProvider } from "./components/ui/theme-provider";
-import NavBar from "./NavBar";
+import { ThemeProvider} from "./components/ui/theme-provider";
+import NavBar from "./components/layout/NavBar";
+import ContactList from "./components/layout/ContactList";
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme" >
+      <div className="flex">
+
       <NavBar />
+      <ContactList/>
+      </div>
     </ThemeProvider>
   );
 }
