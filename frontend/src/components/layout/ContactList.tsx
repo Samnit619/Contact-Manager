@@ -9,19 +9,10 @@ import {
 import { FaStar } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import Axios from "axios";
+import { Contacts } from "@/App";
 
-interface Contacts {
-  
-    user_id: string;
-    _id: string;
-    name: string;
-    email: string;
-    phone: number;
- 
-}
-const ContactList = () => {
+const ContactList = ({contactData,setContactData}: {contactData:Contacts[]|null, setContactData:any} ) => {
   const [selContact, setSelContact] = useState<string | null>(null);
-  const [contactData, setContactData] = useState<Contacts[] | null>(null);
 
   const handleContact = (contactId: string) => {
     setSelContact(contactId);
@@ -70,14 +61,15 @@ const ContactList = () => {
           </SelectContent>
         </Select>
       </div>
+      <div className="flex-col justify-normal">
       {contactData &&
-        contactData.map((contact) => (
+        contactData.map((contact:any) => (
           <div
             key={contact._id}
             onClick={() => handleContact(contact._id)}
             className={`${
-              selContact === contact._id ? "bg-blue-600" : "bg-transparent"
-            } w-[500px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 gap-2 ubuntu-regular hover:bg-slate-800`}
+              selContact === contact._id ? "bg-blue-600" : "bg-transparent hover:bg-slate-800"
+            } group w-[500px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
           >
             <div className="flex items-center gap-2">
               <Avatar className="h-11 w-11 rounded-full">
@@ -86,11 +78,13 @@ const ContactList = () => {
               </Avatar>
               {contact.name}
             </div>
-            <div className="h-11 w-11 border border-slate-300 rounded-full flex items-center justify-center">
+            <div className={`h-11 w-11 border border-slate-300 rounded-full items-center justify-center hidden group-hover:flex `}>
               <FaStar className="text-slate-200" />
             </div>
           </div>
         ))}
+
+      </div>
     </div>
   );
 };
