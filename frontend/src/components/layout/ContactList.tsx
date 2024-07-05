@@ -11,11 +11,21 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import { Contacts } from "@/App";
 
-const ContactList = ({contactData,setContactData}: {contactData:Contacts[]|null, setContactData:any} ) => {
+const ContactList = ({
+  contactData,
+  setContactData,
+}: {
+  contactData: Contacts[] | null;
+  setContactData: any;
+}) => {
   const [selContact, setSelContact] = useState<string | null>(null);
+  const [selFav, setSelFav] = useState<string | null>(null);
 
   const handleContact = (contactId: string) => {
     setSelContact(contactId);
+  };
+  const handleFav = (contactFav: string) => {
+    setSelFav(contactFav);
   };
 
   useEffect(() => {
@@ -61,29 +71,34 @@ const ContactList = ({contactData,setContactData}: {contactData:Contacts[]|null,
           </SelectContent>
         </Select>
       </div>
-      <div className="flex-col justify-normal">
-      {contactData &&
-        contactData.map((contact:any) => (
-          <div
-            key={contact._id}
-            onClick={() => handleContact(contact._id)}
-            className={`${
-              selContact === contact._id ? "bg-blue-600" : "bg-transparent hover:bg-slate-800"
-            } group w-[500px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
-          >
-            <div className="flex items-center gap-2">
-              <Avatar className="h-11 w-11 rounded-full">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              {contact.name}
-            </div>
-            <div className={`h-11 w-11 border border-slate-300 rounded-full items-center justify-center hidden group-hover:flex `}>
-              <FaStar className="text-slate-200" />
-            </div>
-          </div>
-        ))}
+      <div className="flex-col">
+        {contactData &&
+          contactData.map((contact: any) => (
+            <div
+              key={contact._id}
+              onClick={() => handleContact(contact._id)}
+              className={`${
+                selContact === contact._id
+                  ? "bg-blue-600"
+                  : "bg-transparent hover:bg-slate-800"
+              } group w-[500px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-2 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
+            >
+              <div className="flex items-center gap-2">
+                <Avatar className="h-11 w-11 rounded-full">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+                {contact.name}
+              </div>
 
+              <div
+                onClick={() => handleFav(contact._id)}
+                className={` ${selFav == contact._id ? "flex" : "hidden"} h-11 w-11 border border-slate-300 rounded-full items-center justify-center group-hover:flex `}
+              >
+                <FaStar className="text-slate-200" />
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );

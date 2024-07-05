@@ -2,6 +2,7 @@ import { ThemeProvider} from "./components/ui/theme-provider";
 import NavBar from "./components/layout/NavBar";
 import ContactList from "./components/layout/ContactList";
 import { useState } from "react";
+import Manager from "./components/layout/Manager";
 
 export interface Contacts {
   
@@ -20,6 +21,7 @@ function App() {
 
       <NavBar contactData={contactData} />
       <ContactList setContactData={setContactData} contactData={contactData}/>
+      <Manager/>
       </div>
     </ThemeProvider>
   );
