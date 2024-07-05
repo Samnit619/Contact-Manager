@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const User = require("../Models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 //@desc create new contact
 //@route post /api/users/register
 //@access public
@@ -36,8 +37,9 @@ const registerUser = asyncHandler(async (req, res) => {
 
   res.json({ message: "Register the user" });
 });
+
 //@desc create new contact
-//@route post /api/users/register
+//@route post /api/users/login
 //@access public
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -67,7 +69,7 @@ const loginUser = asyncHandler(async (req, res) => {
   res.json({ message: "login the user" });
 });
 //@desc create new contact
-//@route post /api/users/register
+//@route post /api/users/current
 //@access private
 
 const currentUser = asyncHandler(async (req, res) => {
