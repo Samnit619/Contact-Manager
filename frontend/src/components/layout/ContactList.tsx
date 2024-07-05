@@ -11,21 +11,29 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import { Contacts } from "@/App";
 
-const ContactList = ({
-  contactData,
-  setContactData,
-}: {
-  contactData: Contacts[] | null;
-  setContactData: any;
+const ContactList = ({contactData,setContactData,}: {contactData: Contacts[] | null, setContactData: any;
 }) => {
   const [selContact, setSelContact] = useState<string | null>(null);
-  const [selFav, setSelFav] = useState<string | null>(null);
 
   const handleContact = (contactId: string) => {
     setSelContact(contactId);
   };
-  const handleFav = (contactFav: string) => {
-    setSelFav(contactFav);
+  const handleFavoriteClick = async (contact: Contacts) => {
+    try {
+      const updatedContact = { ...contact, fav: !contact.fav };
+      await Axios.put(
+        `http://localhost:5001/api/contacts/${contact._id}`,
+        updatedContact
+      );
+      setContactData(
+        (prevContactData: any) =>
+          prevContactData?.map((c: any) =>
+            c._id === contact._id ? updatedContact : c
+          ) || null
+      );
+    } catch (error) {
+      console.error("Error updating favorite status:", error);
+    }
   };
 
   useEffect(() => {
@@ -45,7 +53,7 @@ const ContactList = ({
 
   return (
     <div className="md:w-[600px] h-screen p-2 transition-colors duration-200">
-      <div className="text-sm ubuntu-regular text-slate-400 mx-5 mt-7">
+      <div className="text-sm ubuntu-regular dark:text-slate-400 text-slate-700 mx-5 mt-7">
         {contactData ? `${contactData.length} TOTAL` : "Loading..."}
       </div>
       <div className="text-2xl ubuntu-medium text mx-5 py-1">Contacts</div>
@@ -79,8 +87,8 @@ const ContactList = ({
               onClick={() => handleContact(contact._id)}
               className={`${
                 selContact === contact._id
-                  ? "bg-blue-600"
-                  : "bg-transparent hover:bg-slate-800"
+                  ? "bg-blue-600 text-slate-200"
+                  : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200"
               } group w-[500px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-2 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
             >
               <div className="flex items-center gap-2">
@@ -90,13 +98,14 @@ const ContactList = ({
                 </Avatar>
                 {contact.name}
               </div>
-
-              <div
-                onClick={() => handleFav(contact._id)}
-                className={` ${selFav == contact._id ? "flex" : "hidden"} h-11 w-11 border border-slate-300 rounded-full items-center justify-center group-hover:flex `}
-              >
-                <FaStar className="text-slate-200" />
-              </div>
+              
+                <div
+                  onClick={() => handleFavoriteClick(contact)}
+                  className={`${contact.fav ? "flex": "hidden"} ${selContact == contact._id ? "border-slate-200": "dark:border-slate-300 border-slate-500"} h-11 w-11 border rounded-full items-center justify-center group-hover:flex`}
+                >
+                  <FaStar className={`${selContact == contact._id ? "text-slate-200": ""} dark:text-slate-200 `} />
+                </div>
+              
             </div>
           ))}
       </div>

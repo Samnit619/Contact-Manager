@@ -11,6 +11,7 @@ export interface Contacts {
   name: string;
   email: string;
   phone: number;
+  fav: boolean
 
 } 
 function App() {
