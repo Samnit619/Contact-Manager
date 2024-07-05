@@ -20,6 +20,9 @@ const ContactSchema = mongoose.Schema(
         type: String,
         required: [true, "Please add the contact phone number"],
       },
+      fav: {
+        type: Boolean,
+      }
     
   },
     {

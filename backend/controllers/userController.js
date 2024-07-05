@@ -38,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
   res.json({ message: "Register the user" });
 });
 
-//@desc create new contact
+//@desc login
 //@route post /api/users/login
 //@access public
 
@@ -68,7 +68,7 @@ const loginUser = asyncHandler(async (req, res) => {
   }
   res.json({ message: "login the user" });
 });
-//@desc create new contact
+//@desc see current user
 //@route post /api/users/current
 //@access private
 
