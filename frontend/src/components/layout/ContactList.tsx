@@ -10,14 +10,26 @@ import { FaStar } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import Axios from "axios";
 import { Contacts } from "@/App";
+import { SelectScrollable } from "./filter2";
 
-const ContactList = ({contactData,setContactData,}: {contactData: Contacts[] | null, setContactData: any;
+const ContactList = ({
+  contactData,
+  setContactData,
+}: {
+  contactData: Contacts[] | null;
+  setContactData: any;
 }) => {
+  //contact selection
   const [selContact, setSelContact] = useState<string | null>(null);
 
+  //random colors array
+  //const colors = ["#e75d7c","#b16cef","#53cca4","#efc84d","#628ef0","#184b73","#883e7f","#ed048b",];
+
+  //To handle contact selection
   const handleContact = (contactId: string) => {
     setSelContact(contactId);
   };
+  //handling favourite contact click
   const handleFavoriteClick = async (contact: Contacts) => {
     try {
       const updatedContact = { ...contact, fav: !contact.fav };
@@ -35,7 +47,17 @@ const ContactList = ({contactData,setContactData,}: {contactData: Contacts[] | n
       console.error("Error updating favorite status:", error);
     }
   };
+  //function to get initials of name
+  var getInitials = function (string: string) {
+    var names = string.split(" "),
+      initials = names[0].substring(0, 1).toUpperCase();
 
+    if (names.length > 1) {
+      initials += names[names.length - 1].substring(0, 1).toUpperCase();
+    }
+    return initials;
+  };
+  //fetching contacts
   useEffect(() => {
     const fetchContact = async () => {
       try {
@@ -59,7 +81,7 @@ const ContactList = ({contactData,setContactData,}: {contactData: Contacts[] | n
       <div className="text-2xl ubuntu-medium text mx-5 py-1">Contacts</div>
       <div className="flex gap-2 py-3">
         <Select>
-          <SelectTrigger className="w-[90px] h-7 ml-5 dark:bg-[#333333] flex justify-between font-medium text-slate-300 px-2 gap-1">
+          <SelectTrigger className="w-[90px] h-7 ml-5 dark:bg-[#333333] bg-[#e3e3e3] flex justify-between font-medium text-slate-500 dark:text-slate-300 px-2 gap-1">
             <SelectValue placeholder="Filter by" />
           </SelectTrigger>
           <SelectContent>
@@ -68,16 +90,7 @@ const ContactList = ({contactData,setContactData,}: {contactData: Contacts[] | n
             <SelectItem value="system">System</SelectItem>
           </SelectContent>
         </Select>
-        <Select>
-          <SelectTrigger className="w-[60px] h-7 dark:bg-[#333333] flex justify-start font-medium text-slate-300 pl-2 pr-1 gap-1">
-            <SelectValue placeholder="A-Z" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">Light</SelectItem>
-            <SelectItem value="dark">Dark</SelectItem>
-            <SelectItem value="system">System</SelectItem>
-          </SelectContent>
-        </Select>
+        <div>{SelectScrollable()}</div>
       </div>
       <div className="flex-col">
         {contactData &&
@@ -89,23 +102,32 @@ const ContactList = ({contactData,setContactData,}: {contactData: Contacts[] | n
                 selContact === contact._id
                   ? "bg-blue-600 text-slate-200"
                   : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200"
-              } group w-[500px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-2 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
+              } group w-[500px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-1 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
             >
               <div className="flex items-center gap-2">
                 <Avatar className="h-11 w-11 rounded-full">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarImage src="" />
+                  <AvatarFallback className={`dark:bg-[#333333] bg-[#e3e3e3] text-slate-700 dark:text-slate-200`}>
+                    {getInitials(contact.name)}
+                  </AvatarFallback>
                 </Avatar>
                 {contact.name}
               </div>
-              
-                <div
-                  onClick={() => handleFavoriteClick(contact)}
-                  className={`${contact.fav ? "flex": "hidden"} ${selContact == contact._id ? "border-slate-200": "dark:border-slate-300 border-slate-500"} h-11 w-11 border rounded-full items-center justify-center group-hover:flex`}
-                >
-                  <FaStar className={`${selContact == contact._id ? "text-slate-200": ""} dark:text-slate-200 `} />
-                </div>
-              
+
+              <div
+                onClick={() => handleFavoriteClick(contact)}
+                className={`${contact.fav ? "flex" : "hidden"} ${
+                  selContact == contact._id
+                    ? "border-slate-200"
+                    : "dark:border-slate-300 border-slate-500"
+                } h-11 w-11 border rounded-full items-center justify-center group-hover:flex`}
+              >
+                <FaStar
+                  className={`${
+                    selContact == contact._id ? "text-slate-200" : ""
+                  } dark:text-slate-200 `}
+                />
+              </div>
             </div>
           ))}
       </div>

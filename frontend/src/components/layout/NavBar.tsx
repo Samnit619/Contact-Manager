@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { Contacts } from "@/App";
+import { DialogDemo } from "./login";
 
 const NavBar = ({contactData}:{contactData: Contacts[]|null}) => {
   //change of theme
@@ -34,7 +35,7 @@ const NavBar = ({contactData}:{contactData: Contacts[]|null}) => {
         <div className="flex gap-5">
           <div className="flex items-center px-1 py-3 md:px-3 md:py-5 md:w-[250px] gap-2 ">
             <div className="w-[35px]">
-              {theme == "dark" ? (
+              {theme == "dark" || theme == "system" ? (
                 <img src="../../../public/logo/darklogo1.png" />
               ) : (
                 <img src="../../../public/logo/logo1.png" />
@@ -102,12 +103,12 @@ const NavBar = ({contactData}:{contactData: Contacts[]|null}) => {
               Samnit Bagha
             </DropdownMenuTrigger>
             <DropdownMenuContent className=" ubuntu-regular bg-black rounded-xl">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel >My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Billing</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>DialogDemo()}>{DialogDemo()}</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
