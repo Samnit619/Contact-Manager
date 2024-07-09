@@ -19,9 +19,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { Contacts } from "@/App";
-import { DialogDemo } from "./login";
+import { useNavigate } from "react-router-dom";
+import { Login } from "@/pages/login";
 
 const NavBar = ({contactData}:{contactData: Contacts[]|null}) => {
+const navigate = useNavigate();
   //change of theme
   const { theme } = useTheme();
   //For unique selection of options
@@ -108,7 +110,7 @@ const NavBar = ({contactData}:{contactData: Contacts[]|null}) => {
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Billing</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={()=>DialogDemo()}>{DialogDemo()}</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/login")}>Login</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -3,6 +3,9 @@ import NavBar from "./components/layout/NavBar";
 import ContactList from "./components/layout/ContactList";
 import { useState } from "react";
 import Manager from "./components/layout/Manager";
+import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
+import { Login } from './pages/login';
+import Home from "./pages/home";
 
 export interface Contacts {
   
@@ -15,15 +18,14 @@ export interface Contacts {
 
 } 
 function App() {
-  const [contactData, setContactData] = useState<Contacts[] | null>(null);
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme" >
-      <div className="flex">
-
-      <NavBar contactData={contactData} />
-      <ContactList setContactData={setContactData} contactData={contactData}/>
-      <Manager/>
-      </div>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/" element={<Home/>}/>
+        </Routes>
+      </Router>
     </ThemeProvider>
   );
 }
