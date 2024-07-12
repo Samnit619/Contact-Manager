@@ -17,25 +17,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Contacts } from "@/App";
 import { useNavigate } from "react-router-dom";
-import { useFetchContacts } from "@/assets/exportFunctions";
 
-
-const NavBar = ({contactData}:{contactData:Contacts[] |null}) => {
-  
-const navigate = useNavigate();
+const NavBar = ({ contactData }: { contactData: Contacts[] | null }) => {
+  const navigate = useNavigate();
   //change of theme
   const { theme } = useTheme();
   //For unique selection of options
   const [IsSelected, setIsSelected] = useState(null);
-  const handleClick = (button:any) => {
+  const handleClick = (button: any) => {
     setIsSelected(button);
   };
-  
+
   return (
-    
     <div className="md:w-[300px] h-screen border-r p-2 flex flex-col justify-between transition-colors duration-100">
       <div className="flex-col">
         <div className="flex gap-5">
@@ -67,28 +63,62 @@ const navigate = useNavigate();
         </div>
 
         <div className="pb-3 mt-1 mx-4 w-[250px] h-[40px]">
-          <Button onClick={() => handleClick("allPeople")} className={` ${IsSelected === "allPeople" ? "dark:bg-[#333333] bg-[#e3e3e3] hover:bg-[#e3e3e3] ":"bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 "} w-[250px] rounded-2xl dark:text-slate-300 text-slate-700 justify-start ubuntu-regular gap-2 text-base pr-1`}>
+          <Button
+            onClick={() => handleClick("allPeople")}
+            className={` ${
+              IsSelected === "allPeople"
+                ? "dark:bg-[#333333] bg-[#e3e3e3] hover:bg-[#e3e3e3] "
+                : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 "
+            } w-[250px] rounded-2xl dark:text-slate-300 text-slate-700 justify-start ubuntu-regular gap-2 text-base pr-1`}
+          >
             <IoMdContacts className="text-xl" />
             All People
-            <div className={`${IsSelected == "allPeople" ? "bg-blue-600 ease-in-out duration-150 text-slate-200" : "dark:bg-[#333333] bg-[#e3e3e3] text-slate-600"} flex w-10 h-7  rounded-xl unbuntu-regular font-medium ml-[77px]  dark:text-slate-200 justify-center items-center`}>
-              {contactData ? contactData.length: ""}
+            <div
+              className={`${
+                IsSelected == "allPeople"
+                  ? "bg-blue-600 ease-in-out duration-150 text-slate-200"
+                  : "dark:bg-[#333333] bg-[#e3e3e3] text-slate-600"
+              } flex w-10 h-7  rounded-xl unbuntu-regular font-medium ml-[77px]  dark:text-slate-200 justify-center items-center`}
+            >
+              {contactData ? contactData.length : ""}
             </div>
           </Button>
         </div>
         <div className="pb-3 mt-1 px-4 w-[250px] h-[40px]">
-          <Button onClick={() => handleClick("favourite")} className={`${IsSelected === "favourite" ? "dark:bg-[#333333] bg-[#e3e3e3] hover:bg-[#e3e3e3] ":"bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200"} w-[250px] rounded-2xl  dark:text-slate-300 text-slate-700 justify-start ubuntu-regular gap-2 text-base `}>
+          <Button
+            onClick={() => handleClick("favourite")}
+            className={`${
+              IsSelected === "favourite"
+                ? "dark:bg-[#333333] bg-[#e3e3e3] hover:bg-[#e3e3e3] "
+                : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200"
+            } w-[250px] rounded-2xl  dark:text-slate-300 text-slate-700 justify-start ubuntu-regular gap-2 text-base `}
+          >
             <FaRegStar className="text-xl" />
             Favourites
           </Button>
         </div>
         <div className="pb-3 mt-1 px-4 w-[250px] h-[40px]">
-          <Button onClick={() => handleClick("tagged")} className={`${IsSelected === "tagged" ? "dark:bg-[#333333] bg-[#e3e3e3] hover:bg-[#e3e3e3]  ":"bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200"} w-[250px] rounded-2xl  dark:text-slate-300 text-slate-700 justify-start ubuntu-regular gap-2 text-base `}>
+          <Button
+            onClick={() => handleClick("tagged")}
+            className={`${
+              IsSelected === "tagged"
+                ? "dark:bg-[#333333] bg-[#e3e3e3] hover:bg-[#e3e3e3]  "
+                : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200"
+            } w-[250px] rounded-2xl  dark:text-slate-300 text-slate-700 justify-start ubuntu-regular gap-2 text-base `}
+          >
             <LuTags className="text-xl" />
             Tagged
           </Button>
         </div>
         <div className="pb-3 mt-1 px-4 w-[250px] h-[40px]">
-          <Button onClick={() => handleClick("events")} className={`${IsSelected === "events" ? "dark:bg-[#333333] bg-[#e3e3e3] hover:bg-[#e3e3e3] ":"bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200"} w-[250px] rounded-2xl  dark:text-slate-300 text-slate-700 justify-start ubuntu-regular gap-2 text-base `}>
+          <Button
+            onClick={() => handleClick("events")}
+            className={`${
+              IsSelected === "events"
+                ? "dark:bg-[#333333] bg-[#e3e3e3] hover:bg-[#e3e3e3] "
+                : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200"
+            } w-[250px] rounded-2xl  dark:text-slate-300 text-slate-700 justify-start ubuntu-regular gap-2 text-base `}
+          >
             <MdEventNote className="text-xl" />
             Events
           </Button>
@@ -109,12 +139,14 @@ const navigate = useNavigate();
               Samnit Bagha
             </DropdownMenuTrigger>
             <DropdownMenuContent className=" ubuntu-regular bg-black rounded-xl">
-              <DropdownMenuLabel >My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Billing</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate("/login")}>Login</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/login")}>
+                Login
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

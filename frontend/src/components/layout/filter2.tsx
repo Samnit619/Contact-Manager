@@ -1,5 +1,4 @@
-import App, { Contacts } from "@/App";
-import { useFetchContacts } from "@/assets/exportFunctions";
+import { Contacts } from "@/App";
 import {
   Select,
   SelectContent,
@@ -8,18 +7,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
-import ContactList from "./ContactList";
 
-export function SelectScrollable({setSortedArray}: { setSortedArray:any}) {
-  const { contactData } = useFetchContacts();
-  
+export function SelectScrollable({
+  setSortedArray,
+  contactData,
+}: {
+  setSortedArray: any;
+  contactData: Contacts[] | null;
+}) {
   const AlphaContact = (value: string) => {
-    
-    if(value == "all"){
+    if (value == "all") {
       setSortedArray(contactData);
-    }else{
-
+    } else {
       const alphaArray = contactData?.filter((contact) => {
         var names = contact.name.split(" ");
         return names[0].substring(0, 1).toLowerCase() == value;
@@ -27,8 +26,8 @@ export function SelectScrollable({setSortedArray}: { setSortedArray:any}) {
       setSortedArray(alphaArray || []);
     }
   };
-  
- //array of alphabets
+
+  //array of alphabets
   const Alphabets = [];
   for (let i = 65; i <= 90; i++) {
     Alphabets.push(String.fromCharCode(i));
@@ -40,7 +39,7 @@ export function SelectScrollable({setSortedArray}: { setSortedArray:any}) {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="all" onClick={() => AlphaContact} >
+          <SelectItem value="all" onClick={() => AlphaContact}>
             All
           </SelectItem>
           {Alphabets.map((letter: string) => (
