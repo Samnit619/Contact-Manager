@@ -17,12 +17,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Contacts } from "@/App";
 import { useNavigate } from "react-router-dom";
-import { Login } from "@/pages/login";
+import { useFetchContacts } from "@/assets/exportFunctions";
 
-const NavBar = ({contactData}:{contactData: Contacts[]|null}) => {
+
+const NavBar = ({contactData}:{contactData:Contacts[] |null}) => {
+  
 const navigate = useNavigate();
   //change of theme
   const { theme } = useTheme();
@@ -31,7 +33,9 @@ const navigate = useNavigate();
   const handleClick = (button:any) => {
     setIsSelected(button);
   };
+  
   return (
+    
     <div className="md:w-[300px] h-screen border-r p-2 flex flex-col justify-between transition-colors duration-100">
       <div className="flex-col">
         <div className="flex gap-5">

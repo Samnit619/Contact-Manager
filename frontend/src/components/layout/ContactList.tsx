@@ -11,42 +11,20 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import { Contacts } from "@/App";
 import { SelectScrollable } from "./filter2";
+import exportFunctions, { useFetchContacts } from "@/assets/exportFunctions";
 
 const ContactList = ({
-  contactData,
-  setContactData,
+ contactData
 }: {
-  contactData: Contacts[] | null;
-  setContactData: any;
+ contactData:Contacts[] | null
 }) => {
   //contact selection
-  const [selContact, setSelContact] = useState<string | null>(null);
+  
+  const { DisplayContacts } = exportFunctions();
 
   //random colors array
   //const colors = ["#e75d7c","#b16cef","#53cca4","#efc84d","#628ef0","#184b73","#883e7f","#ed048b",];
 
-  //To handle contact selection
-  const handleContact = (contactId: string) => {
-    setSelContact(contactId);
-  };
-  //handling favourite contact click
-  const handleFavoriteClick = async (contact: Contacts) => {
-    try {
-      const updatedContact = { ...contact, fav: !contact.fav };
-      await Axios.put(
-        `http://localhost:5001/api/contacts/${contact._id}`,
-        updatedContact
-      );
-      setContactData(
-        (prevContactData: any) =>
-          prevContactData?.map((c: any) =>
-            c._id === contact._id ? updatedContact : c
-          ) || null
-      );
-    } catch (error) {
-      console.error("Error updating favorite status:", error);
-    }
-  };
   //function to get initials of name
   var getInitials = function (string: string) {
     var names = string.split(" "),
@@ -57,21 +35,8 @@ const ContactList = ({
     }
     return initials;
   };
-  //fetching contacts
-  useEffect(() => {
-    const fetchContact = async () => {
-      try {
-        const res = await Axios.get<Contacts[]>(
-          "http://localhost:5001/api/contacts/"
-        );
-        console.log(res.data);
-        setContactData(res.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchContact();
-  }, []);
+
+  
 
   return (
     <div className="md:w-[600px] h-screen p-2 transition-colors duration-200">
@@ -90,46 +55,16 @@ const ContactList = ({
             <SelectItem value="system">System</SelectItem>
           </SelectContent>
         </Select>
-        <div>{SelectScrollable()}</div>
+        <div>
+          {
+            <SelectScrollable
+             
+            />
+          }
+        </div>
       </div>
       <div className="flex-col">
-        {contactData &&
-          contactData.map((contact: any) => (
-            <div
-              key={contact._id}
-              onClick={() => handleContact(contact._id)}
-              className={`${
-                selContact === contact._id
-                  ? "bg-blue-600 text-slate-200"
-                  : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200"
-              } group w-[500px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-1 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
-            >
-              <div className="flex items-center gap-2">
-                <Avatar className="h-11 w-11 rounded-full">
-                  <AvatarImage src="" />
-                  <AvatarFallback className={`dark:bg-[#333333] bg-[#e3e3e3] text-slate-700 dark:text-slate-200`}>
-                    {getInitials(contact.name)}
-                  </AvatarFallback>
-                </Avatar>
-                {contact.name}
-              </div>
-
-              <div
-                onClick={() => handleFavoriteClick(contact)}
-                className={`${contact.fav ? "flex" : "hidden"} ${
-                  selContact == contact._id
-                    ? "border-slate-200"
-                    : "dark:border-slate-300 border-slate-500"
-                } h-11 w-11 border rounded-full items-center justify-center group-hover:flex`}
-              >
-                <FaStar
-                  className={`${
-                    selContact == contact._id ? "text-slate-200" : ""
-                  } dark:text-slate-200 `}
-                />
-              </div>
-            </div>
-          ))}
+        {DisplayContacts({contactData})}
       </div>
     </div>
   );

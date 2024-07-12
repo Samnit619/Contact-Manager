@@ -1,49 +1,45 @@
+import App, { Contacts } from "@/App";
+import exportFunctions, { useFetchContacts } from "@/assets/exportFunctions";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 
-export function SelectScrollable() {
+export function SelectScrollable({}: {}) {
+  const { contactData, setContactData } = useFetchContacts();
+  const { DisplayContacts } = exportFunctions();
+  const AlphaContact = (value: string) => {
+    const sortedArray = contactData?.filter((contact) => {
+      var names = contact.name.split(" ");
+      return names[0].substring(0, 1).toLowerCase() == value;
+    });
+    setContactData(sortedArray || []);
+
+    <App contactData={contactData} />;
+  };
+  const Alphabets = [];
+  for (let i = 65; i <= 90; i++) {
+    Alphabets.push(String.fromCharCode(i));
+  }
   return (
-    <Select>
+    <Select onValueChange={AlphaContact}>
       <SelectTrigger className=" h-7 dark:bg-[#333333] bg-[#e3e3e3] text-slate-500 flex justify-start font-medium dark:text-slate-300 pl-2 pr-1 gap-1">
         <SelectValue placeholder="A-Z" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="a">A</SelectItem>
-          <SelectItem value="b">B</SelectItem>
-          <SelectItem value="c">C</SelectItem>
-          <SelectItem value="d">D</SelectItem>
-          <SelectItem value="e">E</SelectItem>
-          <SelectItem value="f">F</SelectItem>
-          <SelectItem value="g">G</SelectItem>
-          <SelectItem value="h">H</SelectItem>
-          <SelectItem value="i">I</SelectItem>
-          <SelectItem value="j">J</SelectItem>
-          <SelectItem value="k">K</SelectItem>
-          <SelectItem value="l">L</SelectItem>
-          <SelectItem value="m">M</SelectItem>
-          <SelectItem value="n">N</SelectItem>
-          <SelectItem value="o">O</SelectItem>
-          <SelectItem value="p">P</SelectItem>
-          <SelectItem value="q">Q</SelectItem>
-          <SelectItem value="r">R</SelectItem>
-          <SelectItem value="s">S</SelectItem>
-          <SelectItem value="t">T</SelectItem>
-          <SelectItem value="u">U</SelectItem>
-          <SelectItem value="v">V</SelectItem>
-          <SelectItem value="w">W</SelectItem>
-          <SelectItem value="x">X</SelectItem>
-          <SelectItem value="y">Y</SelectItem>
-          <SelectItem value="z">Z</SelectItem>
-          
-          
+          <SelectItem value="all" onClick={() => AlphaContact}>
+            All
+          </SelectItem>
+          {Alphabets.map((letter: string) => (
+            <SelectItem key={letter} value={letter.toLowerCase()}>
+              {letter.toUpperCase()}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>
