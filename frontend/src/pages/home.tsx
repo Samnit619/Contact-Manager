@@ -7,8 +7,9 @@ import NavBar from "@/components/layout/NavBar";
 import { useState } from "react";
 
 const Home = () => {
+  //Initial fetching of data
   const [contactData, setContactData] = useState<Contacts[] | null>(null);
-
+  //Contact Data after sorting
   const [sortedArray, setSortedArray] = useState<Contacts[] | null>(
     contactData
   );
