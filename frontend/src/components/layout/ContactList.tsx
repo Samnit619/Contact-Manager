@@ -11,21 +11,27 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import { Contacts } from "@/App";
 import { SelectScrollable } from "./filter2";
+import DisplayContacts, { FavoriteContacts } from "@/assets/exportFunction";
 
 const ContactList = ({
   contactData,
   setContactData,
   sortedArray,
   setSortedArray,
+  IsSelected,
+  setFavContact,
+  FavContact
 }: {
   contactData: Contacts[] | null;
   setContactData: any;
   sortedArray: Contacts[] | null;
   setSortedArray: any;
+  IsSelected: any;
+  setFavContact: any;
+  FavContact:Contacts[] | null
 }) => {
   const [selContact, setSelContact] = useState<string | null>(null);
 
-  console.log(sortedArray);
   // Handle contact selection
   const handleContact = (contactId: string) => {
     setSelContact(contactId);
@@ -40,7 +46,14 @@ const ContactList = ({
         const AlphaContacts = res.data.sort((a, b) =>
           a.name.localeCompare(b.name)
         );
-        console.log(AlphaContacts);
+        const FavContacts = res.data.filter((contact) => {
+          return contact.fav == true});
+          setFavContact(FavContacts);
+      
+        console.log(FavContacts);
+    
+      
+       
         setContactData(AlphaContacts);
         setSortedArray(AlphaContacts);
       } catch (error) {
@@ -49,6 +62,14 @@ const ContactList = ({
     };
     fetchContact();
   }, []);
+  //filtering favourite contacts
+ 
+ 
+
+ 
+ 
+  console.log(sortedArray);
+
   // Handle favorite contact click
   const handleFavoriteClick = async (contact: Contacts) => {
     try {
@@ -63,6 +84,11 @@ const ContactList = ({
             c._id === contact._id ? updatedContact : c
           ) || null
       );
+      setFavContact((prevContactData: any) =>
+        prevContactData?.map((c: any) =>
+          c._id === contact._id ? updatedContact : c
+        ) || null);
+     
     } catch (error) {
       console.error("Error updating favorite status:", error);
     }
@@ -85,7 +111,7 @@ const ContactList = ({
   return (
     <div className="md:w-[600px] h-screen p-2 transition-colors duration-200">
       <div className="text-sm ubuntu-regular dark:text-slate-400 text-slate-700 mx-5 mt-7">
-        {sortedArray ? `${sortedArray.length} TOTAL` : "Loading..."}
+        {IsSelected == "allPeople" ? `${sortedArray?.length} TOTAL` :  (IsSelected == 'favourite') ? `${FavContact?.length} TOTAL`: "Loading..."}
       </div>
       <div className="text-2xl ubuntu-medium text mx-5 py-1">Contacts</div>
       <div className="flex gap-2 py-3">
@@ -108,47 +134,32 @@ const ContactList = ({
           }
         </div>
       </div>
-      <div className="flex-col">
-        {sortedArray &&
-          sortedArray?.map((contact: any) => (
-            <div
-              key={contact._id}
-              onClick={() => handleContact(contact._id)}
-              className={`${
-                selContact === contact._id
-                  ? "bg-blue-600 text-slate-200"
-                  : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200"
-              } group w-[500px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-1 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
-            >
-              <div className="flex items-center gap-2">
-                <Avatar className="h-11 w-11 rounded-full">
-                  <AvatarImage src="" />
-                  <AvatarFallback
-                    className={`dark:bg-[#333333] bg-[#e3e3e3] text-slate-700 dark:text-slate-200`}
-                  >
-                    {getInitials(contact.name)}
-                  </AvatarFallback>
-                </Avatar>
-                {contact.name}
-              </div>
-
-              <div
-                onClick={() => handleFavoriteClick(contact)}
-                className={`${contact.fav ? "flex" : "hidden"} ${
-                  selContact === contact._id
-                    ? "border-slate-200"
-                    : "dark:border-slate-300 border-slate-500"
-                } h-11 w-11 border rounded-full items-center justify-center group-hover:flex`}
-              >
-                <FaStar
-                  className={`${
-                    selContact === contact._id ? "text-slate-200" : ""
-                  } dark:text-slate-200 `}
-                />
-              </div>
-            </div>
-          ))}
-      </div>
+      {IsSelected == "allPeople" ? (
+        <DisplayContacts
+          selContact={selContact}
+          setSortedArray={setSortedArray}
+          getInitials={getInitials}
+          handleFavoriteClick={handleFavoriteClick}
+          handleContact={handleContact}
+          sortedArray={sortedArray}
+          contactData={contactData}
+        />
+      ) : IsSelected == "favourite" ? (
+        <FavoriteContacts
+          selContact={selContact}
+          setSortedArray={setSortedArray}
+          getInitials={getInitials}
+          handleFavoriteClick={handleFavoriteClick}
+          handleContact={handleContact}
+          sortedArray={sortedArray}
+          FavContact={FavContact}
+          setFavContact={setFavContact}
+          contactData={contactData}
+          
+        />
+      ) : (
+        <div className="mx-5 my-2">No Contacts</div>
+      )}
     </div>
   );
 };

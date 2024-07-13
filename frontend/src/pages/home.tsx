@@ -13,16 +13,22 @@ const Home = () => {
   const [sortedArray, setSortedArray] = useState<Contacts[] | null>(
     contactData
   );
-
+  //Navbar button selection
+  const [IsSelected, setIsSelected] = useState("allPeople");
+  //Navbar Fav Contact
+  const [FavContact, setFavContact] = useState<Contacts[] | null>(null)
   return (
     <div>
       <div className="flex">
-        <NavBar contactData={sortedArray} />
+        <NavBar contactData={contactData} sortedArray={sortedArray} IsSelected={IsSelected} setIsSelected={setIsSelected} FavContact={FavContact} />
         <ContactList
+        setFavContact={setFavContact}
         contactData={contactData}
           setContactData={setContactData}
           sortedArray={sortedArray}
           setSortedArray={setSortedArray}
+          IsSelected={IsSelected}
+          FavContact={FavContact}
         />
         <Manager />
       </div>
