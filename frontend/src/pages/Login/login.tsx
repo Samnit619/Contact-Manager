@@ -1,9 +1,10 @@
 import { Loading } from "@/components/ui/Loading";
 
-import axios from "axios";
+import  Axios from "axios";
 import { useState } from "react";
 import { IoLogoGithub } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import {axiosInstance} from './axiosInstance'
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -16,21 +17,24 @@ export const Login = () => {
     Setloading(true);
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5001/api/users/login", {
+      const response = await axiosInstance.post('/users/login/', {
         email: email.toLowerCase(),
         password: password,
       });
       console.log(response)
       // Assuming the token is received in the response data as `token`
-      const token = response.data.token;
-      localStorage.setItem("token", token);
-
+      if(response.status == 200){
+        const token = response.data.accessToken;  
+        console.log("received token: ",token)
+        localStorage.setItem('jwtToken',token);
+        console.log("You have successfully logged in",localStorage.getItem('jwtToken'));
+      }
       // Set the authorization header for subsequent requests
 
       // Now you can navigate to the dashboard
       Setloading(false);
-      navigate("/" + response.data.id);
-      console.log("User created", response.data);
+      navigate("/");
+      
     } catch (error: any) {
       console.error("Error creating user", error.response?.data);
     }

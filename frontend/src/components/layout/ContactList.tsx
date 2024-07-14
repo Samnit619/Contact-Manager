@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   Select,
   SelectContent,
@@ -6,12 +5,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { FaStar } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import Axios from "axios";
 import { Contacts } from "@/App";
 import { SelectScrollable } from "./filter2";
 import DisplayContacts, { FavoriteContacts } from "@/assets/exportFunction";
+import { axiosInstance } from "@/pages/Login/axiosInstance";
 
 const ContactList = ({
   contactData,
@@ -20,7 +19,7 @@ const ContactList = ({
   setSortedArray,
   IsSelected,
   setFavContact,
-  FavContact
+  FavContact,
 }: {
   contactData: Contacts[] | null;
   setContactData: any;
@@ -28,7 +27,7 @@ const ContactList = ({
   setSortedArray: any;
   IsSelected: any;
   setFavContact: any;
-  FavContact:Contacts[] | null
+  FavContact: Contacts[] | null;
 }) => {
   const [selContact, setSelContact] = useState<string | null>(null);
 
@@ -40,20 +39,17 @@ const ContactList = ({
   useEffect(() => {
     const fetchContact = async () => {
       try {
-        const res = await Axios.get<Contacts[]>(
-          "http://localhost:5001/api/contacts/"
-        );
+        const res = await axiosInstance.get<Contacts[]>("/contacts");
         const AlphaContacts = res.data.sort((a, b) =>
           a.name.localeCompare(b.name)
         );
         const FavContacts = res.data.filter((contact) => {
-          return contact.fav == true});
-          setFavContact(FavContacts);
-      
+          return contact.fav == true;
+        });
+        setFavContact(FavContacts);
+
         console.log(FavContacts);
-    
-      
-       
+
         setContactData(AlphaContacts);
         setSortedArray(AlphaContacts);
       } catch (error) {
@@ -63,11 +59,7 @@ const ContactList = ({
     fetchContact();
   }, []);
   //filtering favourite contacts
- 
- 
 
- 
- 
   console.log(sortedArray);
 
   // Handle favorite contact click
@@ -84,11 +76,12 @@ const ContactList = ({
             c._id === contact._id ? updatedContact : c
           ) || null
       );
-      setFavContact((prevContactData: any) =>
-        prevContactData?.map((c: any) =>
-          c._id === contact._id ? updatedContact : c
-        ) || null);
-     
+      setFavContact(
+        (prevContactData: any) =>
+          prevContactData?.map((c: any) =>
+            c._id === contact._id ? updatedContact : c
+          ) || null
+      );
     } catch (error) {
       console.error("Error updating favorite status:", error);
     }
@@ -111,7 +104,11 @@ const ContactList = ({
   return (
     <div className="md:w-[600px] h-screen p-2 transition-colors duration-200">
       <div className="text-sm ubuntu-regular dark:text-slate-400 text-slate-700 mx-5 mt-7">
-        {IsSelected == "allPeople" ? `${sortedArray?.length} TOTAL` :  (IsSelected == 'favourite') ? `${FavContact?.length} TOTAL`: "Loading..."}
+        {IsSelected == "allPeople"
+          ? `${sortedArray?.length} TOTAL`
+          : IsSelected == "favourite"
+          ? `${FavContact?.length} TOTAL`
+          : "Loading..."}
       </div>
       <div className="text-2xl ubuntu-medium text mx-5 py-1">Contacts</div>
       <div className="flex gap-2 py-3">
@@ -155,7 +152,6 @@ const ContactList = ({
           FavContact={FavContact}
           setFavContact={setFavContact}
           contactData={contactData}
-          
         />
       ) : (
         <div className="mx-5 my-2">No Contacts</div>

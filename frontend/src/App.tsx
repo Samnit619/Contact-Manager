@@ -1,6 +1,6 @@
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Login } from "./pages/login";
+import { Login } from "./pages/Login/login";
 import Home from "./pages/home";
 
 export interface Contacts {
