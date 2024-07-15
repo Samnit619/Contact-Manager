@@ -1,10 +1,9 @@
 import { Loading } from "@/components/ui/Loading";
-
-import  Axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoLogoGithub } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import {axiosInstance} from './axiosInstance'
+import { axiosInstance } from "./axiosInstance";
+import { Contacts } from "@/App";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -12,36 +11,47 @@ export const Login = () => {
   const [loading, Setloading] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userId, setUserId] = useState("");
+  useEffect(() => {
+      const fetchContacts = async () => { 
+        const res = await axiosInstance.get<Contacts[]>("/contacts");
+        setUserId(res.data[0].user_id);
+        console.log(res.data[0].user_id)
+      }
+      fetchContacts();
+  },[])
 
   const handleSubmit = async (e: any) => {
     Setloading(true);
     e.preventDefault();
     try {
-      const response = await axiosInstance.post('/users/login/', {
+      const response = await axiosInstance.post("/users/login/", {
         email: email.toLowerCase(),
         password: password,
       });
-      console.log(response)
+      console.log(response);
       // Assuming the token is received in the response data as `token`
-      if(response.status == 200){
-        const token = response.data.accessToken;  
-        console.log("received token: ",token)
-        localStorage.setItem('jwtToken',token);
-        console.log("You have successfully logged in",localStorage.getItem('jwtToken'));
+      if (response.status == 200) {
+        const token = response.data.accessToken;
+        console.log("received token: ", token);
+        localStorage.setItem("jwtToken", token);
+        console.log(
+          "You have successfully logged in",
+          localStorage.getItem("jwtToken")
+        );
       }
       // Set the authorization header for subsequent requests
 
       // Now you can navigate to the dashboard
       Setloading(false);
-      navigate("/");
-      
+      navigate(`/${userId}`);
     } catch (error: any) {
       console.error("Error creating user", error.response?.data);
     }
   };
 
   setTimeout(() => {
-    Setloading(false)
+    Setloading(false);
   }, 1000);
 
   return (
@@ -56,13 +66,13 @@ export const Login = () => {
               src="../../public/blur.jpg"
               alt="no img"
             />
-            
+
             <div className="text-4xl m-12 font-sfBold text-neutral-100 sm:hidden md:flex  inline-block p-1 bg-clip-text absolute top-0 left-0">
               ContactHub
             </div>
           </div>
           <div className="flex flex-row items-center justify-center sm:w-[50%] w-full h-screen bg-[#09090b]">
-          <div className="text-4xl my-5 mr-6 font-sfBold text-neutral-100 absolute p-1 bg-clip-text md:hidden top-1 left-7">
+            <div className="text-4xl my-5 mr-6 font-sfBold text-neutral-100 absolute p-1 bg-clip-text md:hidden top-1 left-7">
               Linkly
             </div>
             <div className="flex flex-col items-center justify-center">
@@ -128,4 +138,4 @@ export const Login = () => {
       )}
     </div>
   );
-}
+};

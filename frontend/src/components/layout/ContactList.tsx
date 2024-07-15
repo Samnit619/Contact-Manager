@@ -66,7 +66,7 @@ const ContactList = ({
   const handleFavoriteClick = async (contact: Contacts) => {
     try {
       const updatedContact = { ...contact, fav: !contact.fav };
-      await Axios.put(
+      await axiosInstance.put(
         `http://localhost:5001/api/contacts/${contact._id}`,
         updatedContact
       );
