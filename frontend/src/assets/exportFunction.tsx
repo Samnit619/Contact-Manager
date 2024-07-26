@@ -59,7 +59,7 @@ const DisplayContacts = ({
               <FaStar
                 className={`${
                   selContact === contact._id ? "text-slate-200" : ""
-                } dark:text-slate-200 `}
+                } dark:text-slate-200 cursor-pointer `}
               />
             </div>
           </div>
@@ -132,7 +132,7 @@ export const FavoriteContacts = ({
               <FaStar
                 className={`${
                   selContact === contact._id ? "text-slate-200" : ""
-                } dark:text-slate-200 `}
+                } dark:text-slate-200 cursor-pointer`}
               />
             </div>
           </div>

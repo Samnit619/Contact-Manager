@@ -102,7 +102,7 @@ const ContactList = ({
   };
 
   return (
-    <div className="md:w-[600px] h-screen p-2 transition-colors duration-200">
+    <div className="md:w-[575px] h-screen py-2 pl-3 pr-2 transition-colors duration-200">
       <div className="text-sm ubuntu-regular dark:text-slate-400 text-slate-700 mx-5 mt-7">
         {IsSelected == "allPeople"
           ? `${sortedArray?.length} TOTAL`

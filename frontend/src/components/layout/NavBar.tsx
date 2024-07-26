@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Contacts } from "@/App";
 import { useNavigate } from "react-router-dom";
+import FetchUsername from "@/assets/FetchUsername";
+import { User } from "lucide-react";
 
 const NavBar = ({
   contactData,
@@ -36,12 +38,19 @@ const NavBar = ({
   const navigate = useNavigate();
   //change of theme
   const { theme } = useTheme();
+  
+  const logout = () => {
+    navigate('/login');
+    localStorage.removeItem('jwtToken');
+  };
+  const {UserName} = FetchUsername();
   //For unique selection of options
 
   const handleClick = (button: any) => {
     setIsSelected(button);
 
   };
+
 
   return (
     <div className="md:w-[300px] h-screen border-r p-2 flex flex-col justify-between transition-colors duration-100">
@@ -158,7 +167,7 @@ const NavBar = ({
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              Samnit Bagha
+              {UserName ? UserName : "Login"}
             </DropdownMenuTrigger>
             <DropdownMenuContent className=" ubuntu-regular bg-black rounded-xl">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -166,8 +175,8 @@ const NavBar = ({
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Billing</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate("/login")}>
-                Login
+              <DropdownMenuItem onClick={() => logout()}>
+                {UserName ? "Logout" : "Login"}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
