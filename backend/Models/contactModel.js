@@ -22,6 +22,18 @@ const ContactSchema = mongoose.Schema(
       },
       fav: {
         type: Boolean,
+      },
+      relation:{
+        type:String,
+      },
+      birthday:{
+        type:String,
+      },
+      tags:{
+        type:[String],
+      },
+      discription:{
+        type:String,
       }
     
   },
