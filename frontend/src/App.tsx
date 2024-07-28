@@ -14,6 +14,10 @@ export interface Contacts {
   email: string;
   phone: number;
   fav: boolean;
+  relation:string;
+  tags:[string];
+  description:string;
+  birthday:Date;
 }
 function App() {
     //Initial fetching of data

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Select,
   SelectContent,
@@ -5,8 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useEffect, useState } from "react";
-import Axios from "axios";
+import { useEffect,  } from "react";
 import { Contacts } from "@/App";
 import { SelectScrollable } from "./filter2";
 import DisplayContacts, { FavoriteContacts } from "@/assets/exportFunction";
@@ -20,6 +20,9 @@ const ContactList = ({
   IsSelected,
   setFavContact,
   FavContact,
+  handleContact,
+  selContact,
+  setSelContact
 }: {
   contactData: Contacts[] | null;
   setContactData: any;
@@ -28,13 +31,11 @@ const ContactList = ({
   IsSelected: any;
   setFavContact: any;
   FavContact: Contacts[] | null;
+  handleContact: any;
+  selContact:string | null;
+  setSelContact:any
 }) => {
-  const [selContact, setSelContact] = useState<string | null>(null);
-
-  // Handle contact selection
-  const handleContact = (contactId: string) => {
-    setSelContact(contactId);
-  };
+ 
   //fetch contacts
   useEffect(() => {
     const fetchContact = async () => {
@@ -91,9 +92,9 @@ const ContactList = ({
   //const colors = ["#e75d7c","#b16cef","#53cca4","#efc84d","#628ef0","#184b73","#883e7f","#ed048b",];
 
   //function to get initials of name
-  var getInitials = function (string: string) {
-    var names = string.split(" "),
-      initials = names[0].substring(0, 1).toUpperCase();
+  const getInitials = function (string: string) {
+    const names = string.split(" ");
+     let initials = names[0].substring(0, 1).toUpperCase();
 
     if (names.length > 1) {
       initials += names[names.length - 1].substring(0, 1).toUpperCase();

@@ -32,7 +32,7 @@ const ContactSchema = mongoose.Schema(
       tags:{
         type:[String],
       },
-      discription:{
+      description:{
         type:String,
       }
     
