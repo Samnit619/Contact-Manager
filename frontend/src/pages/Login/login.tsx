@@ -15,10 +15,6 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  
- 
-  
-
   const handleSubmit = async (e: any) => {
     Setloading(true);
     e.preventDefault();
@@ -72,7 +68,7 @@ export const Login = () => {
           </div>
           <div className="flex flex-row items-center justify-center sm:w-[50%] w-full h-screen bg-[#09090b]">
             <div className="text-4xl my-5 mr-6 font-sfBold text-neutral-100 absolute p-1 bg-clip-text md:hidden top-1 left-7">
-              Linkly
+              ContactHub
             </div>
             <div className="flex flex-col items-center justify-center">
               <form onSubmit={handleSubmit}>

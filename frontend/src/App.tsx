@@ -1,5 +1,5 @@
 import { ThemeProvider } from "./components/ui/theme-provider";
-import { BrowserRouter as Router, Routes, Route,  } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Login } from "./pages/Login/login";
 import Home from "./pages/home";
 import { useEffect, useState } from "react";
@@ -14,35 +14,42 @@ export interface Contacts {
   email: string;
   phone: number;
   fav: boolean;
-  relation:string;
-  tags:[string];
-  description:string;
-  birthday:Date;
+  relation: string;
+  tags: [string];
+  description: string;
+  birthday: Date;
 }
 function App() {
-    //Initial fetching of data
-    
-    const [contactData, setContactData] = useState<Contacts[] | null>(null);
-    const [userId, setUserId] = useState("");
-    useEffect(()=> {
-      const fetchUserId = async () => {
+  //Initial fetching of data
+  const [contactData, setContactData] = useState<Contacts[] | null>(null);
+  const [userId, setUserId] = useState("");
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const res = await axiosInstance.get<CurrentUser>("/users/current");
+      setUserId(res.data.id);
+      console.log(userId);
+    };
+    fetchUserId();
+  }, []);
 
-        const res = await axiosInstance.get<CurrentUser>("/users/current");
-        setUserId(res.data.id);
-        console.log(userId);
-      }
-      fetchUserId();
-    },[]);
-
-    
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register/>}/>
-          <Route path={`/${userId}`} element={<Home contactData={contactData} setContactData={setContactData}/>} />
-          <Route path={`/`} element={<Home contactData={contactData} setContactData={setContactData}/>} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path={`/${userId}`}
+            element={
+              <Home contactData={contactData} setContactData={setContactData} />
+            }
+          />
+          <Route
+            path={`/`}
+            element={
+              <Home contactData={contactData} setContactData={setContactData} />
+            }
+          />
         </Routes>
       </Router>
     </ThemeProvider>

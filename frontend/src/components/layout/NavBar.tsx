@@ -20,37 +20,43 @@ import {
 import { Contacts } from "@/App";
 import { useNavigate } from "react-router-dom";
 import FetchUsername from "@/assets/FetchUsername";
-import { User } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { AddContact } from "@/assets/exportFunction";
 
 const NavBar = ({
   contactData,
   IsSelected,
   setIsSelected,
   sortedArray,
-  FavContact
+  FavContact,
 }: {
   contactData: Contacts[] | null;
   IsSelected: any;
   setIsSelected: any;
-  sortedArray:Contacts[] | null;
-  FavContact:Contacts[] | null
+  sortedArray: Contacts[] | null;
+  FavContact: Contacts[] | null;
 }) => {
   const navigate = useNavigate();
   //change of theme
   const { theme } = useTheme();
-  
+
   const logout = () => {
-    navigate('/login');
-    localStorage.removeItem('jwtToken');
+    navigate("/login");
+    localStorage.removeItem("jwtToken");
   };
-  const {UserName} = FetchUsername();
+  const { UserName } = FetchUsername();
   //For unique selection of options
 
   const handleClick = (button: any) => {
     setIsSelected(button);
-
   };
-
 
   return (
     <div className="md:w-[300px] h-screen border-r p-2 flex flex-col justify-between transition-colors duration-100">
@@ -85,7 +91,6 @@ const NavBar = ({
 
         <div className="pb-3 mt-1 mx-4 w-[250px] h-[40px]">
           <Button
-            
             onClick={() => handleClick("allPeople")}
             className={` ${
               IsSelected === "allPeople"
@@ -124,7 +129,7 @@ const NavBar = ({
                   : "dark:bg-[#333333] bg-[#e3e3e3] text-slate-600"
               } flex w-10 h-7  rounded-xl unbuntu-regular font-medium ml-[77px]  dark:text-slate-200 justify-center items-center`}
             >
-              { FavContact? FavContact.length : ""}
+              {FavContact ? FavContact.length : ""}
             </div>
           </Button>
         </div>
@@ -154,10 +159,7 @@ const NavBar = ({
             Events
           </Button>
         </div>
-        <Button className=" h-10 w-[250px] hover:bg-blue-500 bg-blue-600 rounded-2xl flex justify-center mx-5 my-3 text-white ubuntu-regular text-base gap-1">
-          Add Contact
-          <div className="flex text-2xl h-10 items-center pb-2 pt-1.5">+</div>
-        </Button>
+        <AddContact/>
       </div>
       <div className="mx-3.5 flex items-center justify-between mb-2">
         <div className="flex gap-2 dark:text-slate-200 ubuntu-medium text-slate-700 items-center dark:hover:bg-slate-800 hover:bg-slate-200 rounded-xl px-2 py-1 cursor-pointer">

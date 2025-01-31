@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useEffect,  } from "react";
+import { useEffect } from "react";
 import { Contacts } from "@/App";
 import { SelectScrollable } from "./filter2";
 import DisplayContacts, { FavoriteContacts } from "@/assets/exportFunction";
@@ -22,7 +22,7 @@ const ContactList = ({
   FavContact,
   handleContact,
   selContact,
-  setSelContact
+  setSelContact,
 }: {
   contactData: Contacts[] | null;
   setContactData: any;
@@ -32,10 +32,35 @@ const ContactList = ({
   setFavContact: any;
   FavContact: Contacts[] | null;
   handleContact: any;
-  selContact:string | null;
-  setSelContact:any
+  selContact: string | null;
+  setSelContact: any;
 }) => {
- 
+  // Handle favorite contact click
+  const handleFavoriteClick = async (contact: Contacts) => {
+    try {
+      const updatedContact = { ...contact, fav: !contact.fav };
+      await axiosInstance.put(
+        `http://localhost:5001/api/contacts/${contact._id}`,
+        updatedContact
+      );
+      setSortedArray(
+        (prevContactData: any) =>
+          prevContactData?.map((c: any) =>
+            c._id === contact._id ? updatedContact : c
+          ) || null
+      );
+      setFavContact(
+        (prevContactData: any) =>
+          prevContactData?.map((c: any) =>
+            c._id === contact._id ? updatedContact : c
+          ) || null
+      );
+      console.log("handle fav click running");
+    } catch (error) {
+      console.error("Error updating favorite status:", error);
+    }
+  };
+
   //fetch contacts
   useEffect(() => {
     const fetchContact = async () => {
@@ -63,38 +88,13 @@ const ContactList = ({
 
   console.log(sortedArray);
 
-  // Handle favorite contact click
-  const handleFavoriteClick = async (contact: Contacts) => {
-    try {
-      const updatedContact = { ...contact, fav: !contact.fav };
-      await axiosInstance.put(
-        `http://localhost:5001/api/contacts/${contact._id}`,
-        updatedContact
-      );
-      setSortedArray(
-        (prevContactData: any) =>
-          prevContactData?.map((c: any) =>
-            c._id === contact._id ? updatedContact : c
-          ) || null
-      );
-      setFavContact(
-        (prevContactData: any) =>
-          prevContactData?.map((c: any) =>
-            c._id === contact._id ? updatedContact : c
-          ) || null
-      );
-    } catch (error) {
-      console.error("Error updating favorite status:", error);
-    }
-  };
-
   //random colors array
   //const colors = ["#e75d7c","#b16cef","#53cca4","#efc84d","#628ef0","#184b73","#883e7f","#ed048b",];
 
   //function to get initials of name
   const getInitials = function (string: string) {
     const names = string.split(" ");
-     let initials = names[0].substring(0, 1).toUpperCase();
+    let initials = names[0].substring(0, 1).toUpperCase();
 
     if (names.length > 1) {
       initials += names[names.length - 1].substring(0, 1).toUpperCase();
