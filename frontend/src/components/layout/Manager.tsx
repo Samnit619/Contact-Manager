@@ -32,6 +32,7 @@ const Manager = ({
   sortedArray: Contacts[] | null;
 }) => {
   const [contactDetails, setContactDetails] = useState<Contacts | null>(null);
+  const [tagBtn, setTagBtn] = useState(false);
 
   useEffect(() => {
     const details = async () => {
@@ -46,8 +47,17 @@ const Manager = ({
     };
     details();
   }, [selContact]);
+
   console.log(contactDetails);
-  return (
+  return selContact == "" ? (
+    <div className="w-[725px] h-screen py-4 pr-4 ">
+      <div className="bg-gradient-to-b from-blue-950 to-[#121212] rounded-xl h-[calc(100vh-70px)] flex justify-center items-center">
+        <div className="text-2xl ubuntu-regular ">
+          Select a contact to view details
+        </div>
+      </div>
+    </div>
+  ) : (
     <div className="w-[725px] h-screen py-4 pr-4">
       <div className=" bg-gradient-to-b rounded-tr-xl rounded-t-xl from-blue-950  to-[#121212]">
         <div className="flex justify-end px-3 pt-3 ">
@@ -55,12 +65,12 @@ const Manager = ({
             <SlOptions className="w-4 text-[#e3e3e3]" />
           </Button>
         </div>
-        <div className="h-[220px] px-4 flex justify-center gap-4 ">
+        <div className="h-[220px] pr-4 pl-10 flex justify-center gap-4 ">
           <Avatar className=" rounded-full w-[175px] h-[175px] ">
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <div className="w-[170px]">
+          <div className="w-[220px]">
             <div className="text-2xl ubuntu-bold">{contactDetails?.name}</div>
             <div className="pb-4">{contactDetails?.relation}</div>
             <div className="flex gap-2">
@@ -75,23 +85,32 @@ const Manager = ({
               </div>
             </div>
             <div>
-              <div className="mt-4">
+              <div className="mt-4 flex gap-1">
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center gap-2">
-                    <FaPlus className="text-2xl rounded-full bg-[#333333] p-1.5 hover:rotate-45 transition-transform " />
+                  <DropdownMenuTrigger className={` flex items-center gap-2`}>
+                    <FaPlus
+                      className={`text-2xl rounded-full bg-[#333333] p-1.5 `}
+                    />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className=" ubuntu-regular bg-black rounded-xl">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
-                    <DropdownMenuItem>Billing</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem></DropdownMenuItem>
+                    <DropdownMenuItem>Family</DropdownMenuItem>
+                    <DropdownMenuItem>Friend</DropdownMenuItem>
+                    <DropdownMenuItem>Work</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
+                <div className="flex gap-1 ">
+                  {contactDetails?.tags?.map((tag, index) => (
+                    <div
+                      key={index}
+                      className="bg-[#333333] rounded-full px-2 text-sm items-center flex text-[#e3e3e3] "
+                    >
+                      {tag}
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="text-[#e3e3e3]">
-                {contactDetails?.discription}
+              <div className="text-[#e3e3e3] text-sm mt-1">
+                {contactDetails?.description}
               </div>
             </div>
           </div>
@@ -113,7 +132,9 @@ const Manager = ({
           </div>
           <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex gap-4 ubuntu-medium">
             <PiCake className="text-[22px]" />{" "}
-            { contactDetails?.birthday ? contactDetails?.birthday.toString() : "No Date added"}
+            {contactDetails?.birthday
+              ? contactDetails?.birthday.toString()
+              : "No Date added"}
           </div>
           <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex gap-4 ubuntu-medium">
             <FaRegHeart className="text-lg" /> {contactDetails?.relation}
