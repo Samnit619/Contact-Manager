@@ -6,11 +6,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Contacts } from "@/App";
 import { SelectScrollable } from "./filter2";
-import DisplayContacts, { FavoriteContacts } from "@/assets/exportFunction";
+import DisplayContacts, {
+  AddContact,
+  FavoriteContacts,
+} from "@/assets/exportFunction";
 import { axiosInstance } from "@/pages/Login/axiosInstance";
+import { Refreshed } from "@/pages/home";
 
 const ContactList = ({
   contactData,
@@ -35,6 +39,7 @@ const ContactList = ({
   selContact: string | null;
   setSelContact: any;
 }) => {
+  const { refreshed, setRefreshed } = Refreshed();
   // Handle favorite contact click
   const handleFavoriteClick = async (contact: Contacts) => {
     try {
@@ -55,6 +60,7 @@ const ContactList = ({
             c._id === contact._id ? updatedContact : c
           ) || null
       );
+      setRefreshed((prev) => !prev);
       console.log("handle fav click running");
     } catch (error) {
       console.error("Error updating favorite status:", error);
@@ -83,7 +89,7 @@ const ContactList = ({
       }
     };
     fetchContact();
-  }, []);
+  }, [refreshed]);
   //filtering favourite contacts
 
   console.log(sortedArray);
