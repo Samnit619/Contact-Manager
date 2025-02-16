@@ -20,14 +20,6 @@ import {
 import { Contacts } from "@/App";
 import { useNavigate } from "react-router-dom";
 import FetchUsername from "@/assets/FetchUsername";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { AddContact } from "@/assets/exportFunction";
 
 const NavBar = ({
@@ -159,7 +151,7 @@ const NavBar = ({
             Events
           </Button>
         </div>
-        <AddContact/>
+        <AddContact />
       </div>
       <div className="mx-3.5 flex items-center justify-between mb-2">
         <div className="flex gap-2 dark:text-slate-200 ubuntu-medium text-slate-700 items-center dark:hover:bg-slate-800 hover:bg-slate-200 rounded-xl px-2 py-1 cursor-pointer">

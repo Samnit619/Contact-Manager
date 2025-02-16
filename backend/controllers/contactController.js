@@ -22,16 +22,16 @@ const createContact = asyncHandler(async (req, res) => {
     throw new Error("All field are mandatory! ");
   }
 
-  
-  
   const contact = await Contact.create({
     user_id: req.user.id,
     name,
-    email,
+    email: email ? email : "",
     phone,
     fav: false,
     relation: relation ? relation : "No Status",
-    birthday: birthday ? (new Date(birthday)).toISOString().split('T')[0]: "No Date",
+    birthday: birthday
+      ? new Date(birthday).toISOString().split("T")[0]
+      : "No Date",
     tags: tags ? tags : "No tags",
     description: description
       ? description
