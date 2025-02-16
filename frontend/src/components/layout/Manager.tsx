@@ -23,16 +23,26 @@ import { Contacts } from "@/App";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { axiosInstance } from "@/pages/Login/axiosInstance";
+import DisplayContacts from "@/assets/exportFunction";
+import { Select } from "../ui/select";
+import { SelectTrigger } from "@radix-ui/react-select";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { Terminal } from "lucide-react";
+import { Refreshed } from "@/pages/home";
 
 const Manager = ({
   selContact,
   sortedArray,
+  setSelContact,
 }: {
   selContact: string | null;
   sortedArray: Contacts[] | null;
+  setSelContact: any;
 }) => {
   const [contactDetails, setContactDetails] = useState<Contacts | null>(null);
   const [tagBtn, setTagBtn] = useState(false);
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const { setRefreshed } = Refreshed();
 
   useEffect(() => {
     const details = async () => {
@@ -49,21 +59,57 @@ const Manager = ({
   }, [selContact]);
 
   console.log(contactDetails);
+  const DeleteContact = async () => {
+    try {
+      await axiosInstance.delete(`/contacts/${contactDetails?._id}`);
+      console.log(`${contactDetails?.name} has been deleted.`);
+      setSelContact("");
+      setDeleteAlert(true);
+      setTimeout(() => setDeleteAlert(false), 7000);
+      setRefreshed((prev) => !prev);
+    } catch (error) {
+      console.error("Error deleting contact", error);
+    }
+  };
   return selContact == "" ? (
     <div className="w-[725px] h-screen py-4 pr-4 ">
       <div className="bg-gradient-to-b from-blue-950 to-[#121212] rounded-xl h-[calc(100vh-70px)] flex justify-center items-center">
         <div className="text-2xl ubuntu-regular ">
           Select a contact to view details
         </div>
+        {deleteAlert == true ? (
+          <Alert className=" absolute right-4 bottom-3 w-[400px]">
+            <Terminal className="h-4 w-4" />
+            <AlertTitle>Success!</AlertTitle>
+            <AlertDescription>
+              {contactDetails?.name}The contact is successfully deleted.
+            </AlertDescription>
+          </Alert>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   ) : (
     <div className="w-[725px] h-screen py-4 pr-4">
       <div className=" bg-gradient-to-b rounded-tr-xl rounded-t-xl from-blue-950  to-[#121212]">
         <div className="flex justify-end px-3 pt-3 ">
-          <Button className="rounded-lg py-0 px-2 h-[35px] w-[35px] dark:bg-[#333333]">
-            <SlOptions className="w-4 text-[#e3e3e3]" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-2">
+              <Button className="rounded-lg py-0 px-2 h-[35px] w-[35px] dark:bg-[#333333]">
+                <SlOptions className="w-4 text-[#e3e3e3]" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className=" ubuntu-regular bg-black rounded-xl">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => DeleteContact()}>
+                Delete Contact
+              </DropdownMenuItem>
+              <DropdownMenuItem>Billing</DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <div className="h-[220px] pr-4 pl-10 flex justify-center gap-4 ">
           <Avatar className=" rounded-full w-[175px] h-[175px] ">
