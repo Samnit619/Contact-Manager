@@ -14,8 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scrollArea";
+
+import { Refreshed } from "@/pages/home";
 import { axiosInstance } from "@/pages/Login/axiosInstance";
-import { Target } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 
@@ -38,7 +39,8 @@ const DisplayContacts = ({
 }) => {
   useEffect(() => {
     setSortedArray(sortedArray);
-  }, [handleFavoriteClick, selContact]);
+    console.log("Refreshed Contacts");
+  }, [sortedArray]);
   return (
     <ScrollArea className="flex-col h-[700px]  ">
       {sortedArray &&
@@ -110,10 +112,10 @@ export const FavoriteContacts = ({
       return contact.fav == true;
     });
     setFavContact(FavouriteContact);
-  }, []);
+  }, [sortedArray]);
 
   return (
-    <ScrollArea className="flex-col ">
+    <ScrollArea className="flex-col">
       {FavContact &&
         FavContact?.map((contact: any) => (
           <div
@@ -158,15 +160,21 @@ export const FavoriteContacts = ({
 };
 
 export const AddContact = () => {
-  const [name, setName] = useState("");
+  const [Fname, setFname] = useState("");
+  const [Lname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [relation, setRelation] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
-  const isFormValid = name.trim() !== "" && phone.trim().length >= 10;
+  const [alertVisible, setAlertVisible] = useState(false);
+  const { setRefreshed } = Refreshed();
+
+  const isFormValid: boolean = phone.trim().length >= 10 && Fname.trim() !== "";
+
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+
     try {
       if (!isFormValid) {
         console.error("Please fill all required fields correctly.");
@@ -174,8 +182,8 @@ export const AddContact = () => {
       }
 
       const NewContact = await axiosInstance.post("/contacts/", {
-        name,
-        email: email.trim().toLowerCase(),
+        name: `${Fname} ${Lname}`,
+        email: email.trim().toLowerCase() || "",
         phone: phone,
         fav: false,
         relation: relation.trim() || "Add relation",
@@ -184,6 +192,17 @@ export const AddContact = () => {
       });
       if (NewContact.status == 201) {
         console.log("New contact created successfully", NewContact.data);
+        setEmail("");
+
+        setFname("");
+        setLname("");
+        setPhone("");
+        setRelation("");
+        setTags("");
+        setDescription("");
+        setAlertVisible(true);
+        setTimeout(() => setAlertVisible(false), 7000);
+        setRefreshed((prev) => !prev);
       }
       console.log(NewContact);
     } catch (error: any) {
@@ -211,14 +230,24 @@ export const AddContact = () => {
               <Label htmlFor="name" className="text-xl w-[70px]">
                 Name
               </Label>
-              <Input
-                placeholder="Add name"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-[250px] bg-[#000000] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
-                required
-              />
+              <div className="flex gap-2.5">
+                <Input
+                  placeholder="First Name"
+                  id="Fname"
+                  value={Fname}
+                  onChange={(e) => setFname(e.target.value)}
+                  className="w-[120px] bg-[#000000] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
+                  required
+                />
+                <Input
+                  placeholder="Last Name"
+                  id="Lname"
+                  value={Lname}
+                  onChange={(e) => setLname(e.target.value)}
+                  className="w-[120px]  bg-[#000000] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
+                  required
+                />
+              </div>
             </div>
 
             <div className="flex gap-10 items-center mt-3">
@@ -257,7 +286,7 @@ export const AddContact = () => {
                 Relation
               </Label>
               <Input
-                placeholder="Eg: Brother, Friend"
+                placeholder="Eg: Family, Friend"
                 id="relation"
                 value={relation}
                 onChange={(e) => setRelation(e.target.value)}
@@ -291,23 +320,20 @@ export const AddContact = () => {
               />
             </div>
           </div>
-
           <DialogFooter>
-            <DialogClose disabled={!isFormValid}>
-              <Button
-                variant="default"
-                type="submit"
-                onClick={handleSubmit}
-                disabled={!isFormValid}
-                className={`px-4 py-2 rounded-md ${
-                  isFormValid
-                    ? "bg-blue-500 hover:bg-blue-600"
-                    : "bg-gray-400 cursor-not-allowed"
-                }`}
-              >
-                Save
-              </Button>
-            </DialogClose>
+            <Button
+              variant="default"
+              type="submit"
+              onClick={handleSubmit}
+              disabled={!isFormValid}
+              className={`px-4 py-2 rounded-md ${
+                isFormValid
+                  ? "bg-blue-500 hover:bg-blue-600"
+                  : "bg-gray-400 cursor-not-allowed"
+              }`}
+            >
+              <DialogClose>Save</DialogClose>
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
