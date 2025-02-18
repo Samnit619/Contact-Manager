@@ -10,7 +10,7 @@ import { GrHomeRounded } from "react-icons/gr";
 import { FaRegHeart } from "react-icons/fa";
 import { PiCake } from "react-icons/pi";
 import { MdCallMade } from "react-icons/md";
-
+import { IoMdCheckmark } from "react-icons/io";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,11 +21,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Contacts } from "@/App";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { axiosInstance } from "@/pages/Login/axiosInstance";
-import DisplayContacts from "@/assets/exportFunction";
-import { Select } from "../ui/select";
-import { SelectTrigger } from "@radix-ui/react-select";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Terminal } from "lucide-react";
 import { Refreshed } from "@/pages/home";
@@ -34,16 +30,21 @@ const Manager = ({
   selContact,
   sortedArray,
   setSelContact,
+  setSortedArray,
 }: {
   selContact: string | null;
   sortedArray: Contacts[] | null;
   setSelContact: any;
+  setSortedArray: any;
 }) => {
+  //storing selected contact details
   const [contactDetails, setContactDetails] = useState<Contacts | null>(null);
-  const [tagBtn, setTagBtn] = useState(false);
+  //edit contact state
+  const [editContact, setEditContact] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState(false);
   const { setRefreshed } = Refreshed();
 
+  //fetching contact details after each selection
   useEffect(() => {
     const details = async () => {
       try {
@@ -56,9 +57,11 @@ const Manager = ({
       }
     };
     details();
-  }, [selContact]);
+  }, [selContact, sortedArray]);
 
   console.log(contactDetails);
+
+  //function to delete contacts
   const DeleteContact = async () => {
     try {
       await axiosInstance.delete(`/contacts/${contactDetails?._id}`);
@@ -71,6 +74,27 @@ const Manager = ({
       console.error("Error deleting contact", error);
     }
   };
+
+  //add tag function
+  const handleTags = async (contact: Contacts, newTag: string) => {
+    const updatedContact = { ...contact, tags: [...contact.tags, newTag] };
+    await axiosInstance.put(`/contacts/${contact?._id}`, updatedContact);
+    setSortedArray(
+      (prevContactData: any) =>
+        prevContactData?.map((c: any) =>
+          c._id === contact._id ? updatedContact : c
+        ) || null
+    );
+  };
+
+  //edit contact function
+  const EditContact = () => {
+    setEditContact(!editContact);
+  };
+
+  //handle edit function
+  const HandleEdit = () => {};
+
   return selContact == "" ? (
     <div className="w-[725px] h-screen py-4 pr-4 ">
       <div className="bg-gradient-to-b from-blue-950 to-[#121212] rounded-xl h-[calc(100vh-70px)] flex justify-center items-center">
@@ -93,7 +117,16 @@ const Manager = ({
   ) : (
     <div className="w-[725px] h-screen py-4 pr-4">
       <div className=" bg-gradient-to-b rounded-tr-xl rounded-t-xl from-blue-950  to-[#121212]">
-        <div className="flex justify-end px-3 pt-3 ">
+        <div className="flex justify-end px-3 pt-3 gap-2 ">
+          <div
+            onClick={() => HandleEdit()}
+            className={` ${
+              editContact ? "flex" : "hidden"
+            } h-[35px] w-[80px] rounded-lg bg-blue-700 hover:bg-blue-600 transition-colors duration-200 py-1 px-2.5 justify-center items-center gap-1 cursor-pointer  `}
+          >
+            <IoMdCheckmark className="" />
+            <div className="ubuntu-regular text-base">Done</div>
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-2">
               <Button className="rounded-lg py-0 px-2 h-[35px] w-[35px] dark:bg-[#333333]">
@@ -101,13 +134,14 @@ const Manager = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className=" ubuntu-regular bg-black rounded-xl">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>Options</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => DeleteContact()}>
                 Delete Contact
               </DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => EditContact()}>
+                Edit
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -139,9 +173,27 @@ const Manager = ({
                     />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className=" ubuntu-regular bg-black rounded-xl">
-                    <DropdownMenuItem>Family</DropdownMenuItem>
-                    <DropdownMenuItem>Friend</DropdownMenuItem>
-                    <DropdownMenuItem>Work</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() =>
+                        contactDetails && handleTags(contactDetails, "Family")
+                      }
+                    >
+                      Family
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() =>
+                        contactDetails && handleTags(contactDetails, "Friend")
+                      }
+                    >
+                      Friend
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() =>
+                        contactDetails && handleTags(contactDetails, "Work")
+                      }
+                    >
+                      Work
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <div className="flex gap-1 ">

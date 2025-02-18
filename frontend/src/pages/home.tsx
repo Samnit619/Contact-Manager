@@ -97,6 +97,7 @@ const Home = ({
             selContact={selContact}
             sortedArray={sortedArray}
             setSelContact={setSelContact}
+            setSortedArray={setSortedArray}
           />
         </div>
       </div>

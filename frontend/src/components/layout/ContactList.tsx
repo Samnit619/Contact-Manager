@@ -6,13 +6,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { Contacts } from "@/App";
 import { SelectScrollable } from "./filter2";
-import DisplayContacts, {
-  AddContact,
-  FavoriteContacts,
-} from "@/assets/exportFunction";
+import DisplayContacts, { FavoriteContacts } from "@/assets/exportFunction";
 import { axiosInstance } from "@/pages/Login/axiosInstance";
 import { Refreshed } from "@/pages/home";
 

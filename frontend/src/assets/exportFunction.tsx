@@ -187,7 +187,7 @@ export const AddContact = () => {
         phone: phone,
         fav: false,
         relation: relation.trim() || "Add relation",
-        description: description.trim() || "Add a description",
+        description: description.trim() || "Add description",
         tags: tags ? tags.split(",") : [],
       });
       if (NewContact.status == 201) {
