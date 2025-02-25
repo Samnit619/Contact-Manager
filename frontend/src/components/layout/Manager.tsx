@@ -11,6 +11,8 @@ import { FaRegHeart } from "react-icons/fa";
 import { PiCake } from "react-icons/pi";
 import { MdCallMade } from "react-icons/md";
 import { IoMdCheckmark } from "react-icons/io";
+import { MdOutlineEdit } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,6 +44,23 @@ const Manager = ({
   //edit contact state
   const [editContact, setEditContact] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState(false);
+  const [openEdit, setOpenEdit] = useState<{ [key: string]: boolean }>({
+    phone: false,
+    email: false,
+    location: false,
+    home: false,
+    birthday: false,
+  });
+
+  //Edit contact details
+  const [FormData, setFormData] = useState({
+    phone: "",
+    email: "",
+    location: "",
+    home: "",
+    birthday: "",
+  });
+
   const { setRefreshed } = Refreshed();
 
   //fetching contact details after each selection
@@ -92,8 +111,33 @@ const Manager = ({
     setEditContact(!editContact);
   };
 
+  //handle cross
+  //handle input change
+  const HandleInput = (e: any) => {
+    setFormData({ ...FormData, [e.target.name]: e.target.value });
+  };
+
   //handle edit function
-  const HandleEdit = () => {};
+  const HandleEdit = async () => {
+    setEditContact(!editContact);
+    setOpenEdit((prev) =>
+      Object.fromEntries(Object.keys(prev).map((key) => [key, false]))
+    );
+    if (FormData.phone != "") {
+      const updatedPhone = { ...contactDetails, phone: FormData.phone };
+      await axiosInstance.put(`/contacts/${contactDetails?._id}`, updatedPhone);
+      console.log("Phone updated");
+      setSortedArray(
+        (prevContactData: any) =>
+          prevContactData?.map((c: any) =>
+            c._id === contactDetails?._id ? updatedPhone : c
+          ) || null
+      );
+    }
+    if (FormData.email != "") {
+    }
+    setFormData({ phone: "", email: "", birthday: "", location: "", home: "" });
+  };
 
   return selContact == "" ? (
     <div className="w-[725px] h-screen py-4 pr-4 ">
@@ -119,7 +163,7 @@ const Manager = ({
       <div className=" bg-gradient-to-b rounded-tr-xl rounded-t-xl from-blue-950  to-[#121212]">
         <div className="flex justify-end px-3 pt-3 gap-2 ">
           <div
-            onClick={() => HandleEdit()}
+            onClick={HandleEdit}
             className={` ${
               editContact ? "flex" : "hidden"
             } h-[35px] w-[80px] rounded-lg bg-blue-700 hover:bg-blue-600 transition-colors duration-200 py-1 px-2.5 justify-center items-center gap-1 cursor-pointer  `}
@@ -214,25 +258,86 @@ const Manager = ({
           </div>
         </div>
       </div>
+
       <div className="px-5 py-7 dark:bg-[#333333]/40 bg-[#e3e3e3] rounded-2xl h-[calc(100vh-310px)] ">
         <div className=" grid-cols-2 grid gap-2 ">
-          <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl items-center flex gap-4 ubuntu-medium">
-            <LuPhoneCall className="text-xl" /> {contactDetails?.phone}
+          <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl items-center flex justify-between ubuntu-medium">
+            <div className="flex gap-4 items-center" /* phone number*/>
+              <LuPhoneCall className="text-xl" />
+              {!openEdit.phone ? (
+                contactDetails?.phone
+              ) : (
+                <input
+                  onChange={HandleInput}
+                  name="phone"
+                  type="tel"
+                  value={FormData.phone}
+                  maxLength={10}
+                  placeholder="Add phone"
+                  className="bg-[#121212] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              )}
+            </div>
+            {!openEdit.phone ? (
+              <MdOutlineEdit
+                onClick={() =>
+                  setOpenEdit((prev) => ({ ...prev, phone: true }))
+                }
+                className={` ${
+                  editContact ? "flex" : "hidden"
+                } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer ml-1 `}
+              />
+            ) : (
+              <RxCross2
+                onClick={() =>
+                  setOpenEdit((prev) => ({ ...prev, phone: false }))
+                }
+                className=" cursor-pointer"
+              />
+            )}
           </div>
-          <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex gap-4 ubuntu-medium">
-            <LuMail className="text-xl" /> {contactDetails?.email}
+          <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl items-center flex justify-between ubuntu-medium">
+            <div className="flex gap-4" /*Email address*/>
+              <LuMail className="text-xl" /> {contactDetails?.email}
+            </div>
+            <MdOutlineEdit
+              className={` ${
+                editContact ? "flex" : "hidden"
+              } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer `}
+            />
           </div>
-          <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex gap-4 ubuntu-medium">
-            <GrLocation className="text-xl" /> Location
+          <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex justify-between ubuntu-medium">
+            <div className="flex gap-4" /*Location*/>
+              <GrLocation className="text-xl" /> Location
+            </div>
+            <MdOutlineEdit
+              className={` ${
+                editContact ? "flex" : "hidden"
+              } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer `}
+            />
           </div>
-          <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex gap-4 ubuntu-medium">
-            <GrHomeRounded className="text-lg" /> Home Address
+          <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl items-center flex justify-between ubuntu-medium">
+            <div className="flex gap-4" /*Home address*/>
+              <GrHomeRounded className="text-lg" /> Home Address
+            </div>
+            <MdOutlineEdit
+              className={` ${
+                editContact ? "flex" : "hidden"
+              } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer `}
+            />
           </div>
-          <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex gap-4 ubuntu-medium">
-            <PiCake className="text-[22px]" />{" "}
-            {contactDetails?.birthday
-              ? contactDetails?.birthday.toString()
-              : "No Date added"}
+          <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex justify-between ubuntu-medium">
+            <div className="flex gap-4" /*Birthday*/>
+              <PiCake className="text-[22px]" />
+              {contactDetails?.birthday
+                ? contactDetails?.birthday.toString()
+                : "No Date added"}
+            </div>
+            <MdOutlineEdit
+              className={` ${
+                editContact ? "flex" : "hidden"
+              } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer `}
+            />
           </div>
           <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex gap-4 ubuntu-medium">
             <FaRegHeart className="text-lg" /> {contactDetails?.relation}
