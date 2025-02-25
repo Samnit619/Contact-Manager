@@ -80,6 +80,7 @@ const Home = ({
             IsSelected={IsSelected}
             setIsSelected={setIsSelected}
             FavContact={FavContact}
+            handleContact={handleContact}
           />
           <ContactList
             setFavContact={setFavContact}

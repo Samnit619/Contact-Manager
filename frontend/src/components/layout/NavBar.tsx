@@ -28,12 +28,14 @@ const NavBar = ({
   setIsSelected,
   sortedArray,
   FavContact,
+  handleContact,
 }: {
   contactData: Contacts[] | null;
   IsSelected: any;
   setIsSelected: any;
   sortedArray: Contacts[] | null;
   FavContact: Contacts[] | null;
+  handleContact: any;
 }) => {
   const navigate = useNavigate();
   //change of theme
@@ -151,7 +153,7 @@ const NavBar = ({
             Events
           </Button>
         </div>
-        <AddContact />
+        <AddContact handleContact={handleContact} sortedArray={sortedArray} />
       </div>
       <div className="mx-3.5 flex items-center justify-between mb-2">
         <div className="flex gap-2 dark:text-slate-200 ubuntu-medium text-slate-700 items-center dark:hover:bg-slate-800 hover:bg-slate-200 rounded-xl px-2 py-1 cursor-pointer">
