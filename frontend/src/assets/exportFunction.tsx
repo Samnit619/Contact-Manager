@@ -159,7 +159,10 @@ export const FavoriteContacts = ({
   );
 };
 
-export const AddContact = () => {
+export const AddContact = (
+  handleContact: any,
+  sortedArray: Contacts[] | null
+) => {
   const [Fname, setFname] = useState("");
   const [Lname, setLname] = useState("");
   const [email, setEmail] = useState("");
@@ -192,8 +195,9 @@ export const AddContact = () => {
       });
       if (NewContact.status == 201) {
         console.log("New contact created successfully", NewContact.data);
-        setEmail("");
+        setRefreshed((prev) => !prev);
 
+        setEmail("");
         setFname("");
         setLname("");
         setPhone("");
@@ -202,7 +206,6 @@ export const AddContact = () => {
         setDescription("");
         setAlertVisible(true);
         setTimeout(() => setAlertVisible(false), 7000);
-        setRefreshed((prev) => !prev);
       }
       console.log(NewContact);
     } catch (error: any) {
