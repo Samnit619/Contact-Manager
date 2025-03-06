@@ -33,6 +33,12 @@ const ContactSchema = mongoose.Schema(
     description: {
       type: String,
     },
+    location: {
+      type: String,
+    },
+    home: {
+      type: String,
+    },
   },
   {
     timestamps: true,
