@@ -17,7 +17,9 @@ export interface Contacts {
   relation: string;
   tags: [string];
   description: string;
-  birthday: Date;
+  birthday: string;
+  location: string;
+  home: string;
 }
 function App() {
   //Initial fetching of data
