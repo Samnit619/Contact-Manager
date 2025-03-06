@@ -21,12 +21,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Contacts } from "@/App";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "@/pages/Login/axiosInstance";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-import { Terminal } from "lucide-react";
+import { CalendarIcon, Terminal } from "lucide-react";
 import { Refreshed } from "@/pages/home";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { Calendar } from "../ui/calendar";
 
 const Manager = ({
   selContact,
@@ -109,9 +115,23 @@ const Manager = ({
   //edit contact function
   const EditContact = () => {
     setEditContact(!editContact);
+    setFormData({
+      phone: "",
+      email: "",
+      birthday: "",
+      location: "",
+      home: "",
+    });
+    setOpenEdit((prev) =>
+      Object.fromEntries(Object.keys(prev).map((key) => [key, false]))
+    );
   };
 
   //handle cross
+  const HandleCross = (value: string) => {
+    setFormData({ ...FormData, [value]: "" });
+    setOpenEdit((prev) => ({ ...prev, [value]: false }));
+  };
   //handle input change
   const HandleInput = (e: any) => {
     setFormData({ ...FormData, [e.target.name]: e.target.value });
@@ -119,24 +139,51 @@ const Manager = ({
 
   //handle edit function
   const HandleEdit = async () => {
+    const updatedContact = { ...contactDetails };
+    if (FormData.phone !== "") {
+      updatedContact.phone = Number(FormData.phone);
+    }
+    if (FormData.email !== "") {
+      updatedContact.email = FormData.email;
+    }
+    if (FormData.location !== "") {
+      updatedContact.location = FormData.location;
+    }
+    if (FormData.home !== "") {
+      updatedContact.home = FormData.home;
+    }
+    if (FormData.birthday !== "") {
+      updatedContact.birthday = FormData.birthday.split("T")[0];
+    }
+    if (
+      FormData.phone !== "" ||
+      FormData.email !== "" ||
+      FormData.location !== "" ||
+      FormData.home !== "" ||
+      FormData.birthday !== ""
+    ) {
+      await axiosInstance.put(
+        `/contacts/${contactDetails?._id}`,
+        updatedContact
+      );
+      setSortedArray(
+        (prevContactData: any) =>
+          prevContactData?.map((c: any) =>
+            c._id === contactDetails?._id ? updatedContact : c
+          ) || null
+      );
+    }
     setEditContact(!editContact);
     setOpenEdit((prev) =>
       Object.fromEntries(Object.keys(prev).map((key) => [key, false]))
     );
-    if (FormData.phone != "") {
-      const updatedPhone = { ...contactDetails, phone: FormData.phone };
-      await axiosInstance.put(`/contacts/${contactDetails?._id}`, updatedPhone);
-      console.log("Phone updated");
-      setSortedArray(
-        (prevContactData: any) =>
-          prevContactData?.map((c: any) =>
-            c._id === contactDetails?._id ? updatedPhone : c
-          ) || null
-      );
-    }
-    if (FormData.email != "") {
-    }
-    setFormData({ phone: "", email: "", birthday: "", location: "", home: "" });
+    setFormData({
+      phone: "",
+      email: "",
+      birthday: "",
+      location: "",
+      home: "",
+    });
   };
 
   return selContact == "" ? (
@@ -289,55 +336,155 @@ const Manager = ({
               />
             ) : (
               <RxCross2
-                onClick={() =>
-                  setOpenEdit((prev) => ({ ...prev, phone: false }))
-                }
+                onClick={() => HandleCross("phone")}
                 className=" cursor-pointer"
               />
             )}
           </div>
           <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl items-center flex justify-between ubuntu-medium">
-            <div className="flex gap-4" /*Email address*/>
-              <LuMail className="text-xl" /> {contactDetails?.email}
+            <div
+              className="flex gap-4 justify-center items-center" /*Email address*/
+            >
+              <LuMail className="text-xl" />
+              {!openEdit.email ? (
+                contactDetails?.email
+              ) : (
+                <input
+                  onChange={HandleInput}
+                  name="email"
+                  type="email"
+                  value={FormData.email}
+                  placeholder="Add email"
+                  className="bg-[#121212] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              )}
             </div>
-            <MdOutlineEdit
-              className={` ${
-                editContact ? "flex" : "hidden"
-              } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer `}
-            />
+            {!openEdit.email ? (
+              <MdOutlineEdit
+                onClick={() =>
+                  setOpenEdit((prev) => ({ ...prev, email: true }))
+                }
+                className={` ${
+                  editContact ? "flex" : "hidden"
+                } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer ml-1 `}
+              />
+            ) : (
+              <RxCross2
+                onClick={() => HandleCross("email")}
+                className=" cursor-pointer"
+              />
+            )}
           </div>
           <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex justify-between ubuntu-medium">
-            <div className="flex gap-4" /*Location*/>
-              <GrLocation className="text-xl" /> Location
+            <div
+              className="flex gap-4 justify-center items-center" /*Location*/
+            >
+              <GrLocation className="text-xl" />
+              {!openEdit.location ? (
+                contactDetails?.location || "Location"
+              ) : (
+                <input
+                  onChange={HandleInput}
+                  name="location"
+                  type="text"
+                  value={FormData.location}
+                  placeholder="Add location"
+                  className="bg-[#121212] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              )}
             </div>
-            <MdOutlineEdit
-              className={` ${
-                editContact ? "flex" : "hidden"
-              } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer `}
-            />
+            {!openEdit.location ? (
+              <MdOutlineEdit
+                onClick={() =>
+                  setOpenEdit((prev) => ({ ...prev, location: true }))
+                }
+                className={` ${
+                  editContact ? "flex" : "hidden"
+                } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer ml-1 `}
+              />
+            ) : (
+              <RxCross2
+                onClick={() => HandleCross("location")}
+                className=" cursor-pointer"
+              />
+            )}
           </div>
           <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl items-center flex justify-between ubuntu-medium">
-            <div className="flex gap-4" /*Home address*/>
-              <GrHomeRounded className="text-lg" /> Home Address
+            <div
+              className="flex gap-4 justify-center items-center" /*Home address*/
+            >
+              <GrHomeRounded className="text-lg" />
+              {!openEdit.home ? (
+                contactDetails?.home || "Home address"
+              ) : (
+                <input
+                  onChange={HandleInput}
+                  name="home"
+                  type="text"
+                  value={FormData.home}
+                  placeholder="Add Address"
+                  className="bg-[#121212] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              )}
             </div>
-            <MdOutlineEdit
-              className={` ${
-                editContact ? "flex" : "hidden"
-              } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer `}
-            />
+            {!openEdit.home ? (
+              <MdOutlineEdit
+                onClick={() => setOpenEdit((prev) => ({ ...prev, home: true }))}
+                className={` ${
+                  editContact ? "flex" : "hidden"
+                } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer ml-1 `}
+              />
+            ) : (
+              <RxCross2
+                onClick={() => HandleCross("home")}
+                className=" cursor-pointer"
+              />
+            )}
           </div>
           <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex justify-between ubuntu-medium">
-            <div className="flex gap-4" /*Birthday*/>
+            <div
+              className="flex gap-4 justify-center items-center" /*Birthday*/
+            >
               <PiCake className="text-[22px]" />
-              {contactDetails?.birthday
-                ? contactDetails?.birthday.toString()
-                : "No Date added"}
+              {!openEdit.birthday ? (
+                contactDetails?.birthday || "No Date"
+              ) : (
+                <DatePicker
+                  className=" bg-[#121212] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                  selected={
+                    FormData.birthday ? new Date(FormData.birthday) : null
+                  }
+                  onChange={(date: Date | null) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      birthday: date ? date.toISOString() : "",
+                    }))
+                  }
+                  showYearDropdown
+                  yearDropdownItemNumber={100}
+                  scrollableYearDropdown
+                  dateFormat="yyyy-MM-dd"
+                  placeholderText="Select Date"
+                  minDate={new Date(1900, 0, 1)}
+                  maxDate={new Date()}
+                />
+              )}
             </div>
-            <MdOutlineEdit
-              className={` ${
-                editContact ? "flex" : "hidden"
-              } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer `}
-            />
+            {!openEdit.birthday ? (
+              <MdOutlineEdit
+                onClick={() =>
+                  setOpenEdit((prev) => ({ ...prev, birthday: true }))
+                }
+                className={` ${
+                  editContact ? "flex" : "hidden"
+                } border-b-2 text-3xl border-slate-100 rounded-sm p-1 cursor-pointer ml-1 `}
+              />
+            ) : (
+              <RxCross2
+                onClick={() => HandleCross("birthday")}
+                className=" cursor-pointer"
+              />
+            )}
           </div>
           <div className="bg-[#121212] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex gap-4 ubuntu-medium">
             <FaRegHeart className="text-lg" /> {contactDetails?.relation}

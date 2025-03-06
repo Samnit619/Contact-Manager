@@ -58,6 +58,7 @@ const Home = ({
   const [IsSelected, setIsSelected] = useState("allPeople");
   //Navbar Fav Contact
   const [FavContact, setFavContact] = useState<Contacts[] | null>(null);
+
   //for contact selection through contact ID
   const [selContact, setSelContact] = useState<string | null>("");
   console.log(sortedArray);
