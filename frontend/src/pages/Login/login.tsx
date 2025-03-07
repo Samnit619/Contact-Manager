@@ -8,9 +8,7 @@ import { CurrentUser } from "@/assets/FetchUsername";
 
 export const Login = () => {
   const navigate = useNavigate();
-  
-  
-  
+
   const [loading, Setloading] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,12 +32,10 @@ export const Login = () => {
           localStorage.getItem("jwtToken")
         );
       }
-      
-     
+
       // Now you can navigate to the contact page
       Setloading(false);
       navigate(`/`);
-
     } catch (error: any) {
       console.error("Error creating user", error.response?.data);
     }
@@ -58,11 +54,11 @@ export const Login = () => {
           <div className="w-[50%] h-screen  hidden sm:block">
             <img
               className="w-[100%] h-screen object-cover bg-fixed"
-              src="../../public/blur.jpg"
+              src="../../public/login/login.avif"
               alt="no img"
             />
 
-            <div className="text-4xl m-12 font-sfBold text-neutral-100 sm:hidden md:flex  inline-block p-1 bg-clip-text absolute top-0 left-0">
+            <div className="text-4xl m-12 font-sfBold text-neutral-100 ubuntu-medium sm:hidden md:flex  inline-block p-1 bg-clip-text absolute top-0 left-0">
               ContactHub
             </div>
           </div>
@@ -73,7 +69,9 @@ export const Login = () => {
             <div className="flex flex-col items-center justify-center">
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-col items-center justify-center p-8 rounded-lg">
-                  <div className="text-slate-100 font-semi text-4xl">Login</div>
+                  <div className="text-slate-100 font-semi text-4xl ubuntu-medium">
+                    Login
+                  </div>
                   <p className="text-neutral-400 font-Regular text-xl mt-3">
                     Enter your email below to login to your account
                   </p>
@@ -108,7 +106,7 @@ export const Login = () => {
                   <div className="w-full mt-4">
                     <button
                       type="submit"
-                      className="text-[#181E298] bg-slate-100 font-semi text-xl p-3 w-full rounded-lg "
+                      className="text-[#181E29] bg-slate-100 hover:bg-slate-200 transition-colors duration-150 font-semibold text-xl p-3 w-full rounded-lg ubuntu-medium "
                     >
                       Login
                     </button>
@@ -122,7 +120,12 @@ export const Login = () => {
                   <div className="flex flex-row justify-center w-full mt-4 font-Regular text-xl text-slate-100">
                     <p>
                       Don't have an account?{" "}
-                      <span className="underline" onClick={() => navigate("/register")}>Sign Up</span>
+                      <span
+                        className="underline cursor-pointer"
+                        onClick={() => navigate("/register")}
+                      >
+                        Sign Up
+                      </span>
                     </p>
                   </div>
                 </div>
