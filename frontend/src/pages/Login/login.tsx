@@ -1,10 +1,10 @@
 import { Loading } from "@/components/ui/Loading";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoLogoGithub } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "./axiosInstance";
-import { Contacts } from "@/App";
-import { CurrentUser } from "@/assets/FetchUsername";
+import { FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -12,6 +12,7 @@ export const Login = () => {
   const [loading, Setloading] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [hide, setHide] = useState(true);
 
   const handleSubmit = async (e: any) => {
     Setloading(true);
@@ -31,11 +32,10 @@ export const Login = () => {
           "You have successfully logged in",
           localStorage.getItem("jwtToken")
         );
+        // Now you can navigate to the contact page
+        Setloading(false);
+        navigate(`/`);
       }
-
-      // Now you can navigate to the contact page
-      Setloading(false);
-      navigate(`/`);
     } catch (error: any) {
       console.error("Error creating user", error.response?.data);
     }
@@ -51,7 +51,7 @@ export const Login = () => {
         <Loading />
       ) : (
         <div className="flex flex-row justify-between bg-[#18181a] w-full h-screen">
-          <div className="w-[50%] h-screen  hidden sm:block">
+          <div className="w-[50%] h-screen  hidden sm:block  bg-gradient-to-r from-transparent to-black ">
             <img
               className="w-[100%] h-screen object-cover bg-fixed"
               src="../../public/login/login.avif"
@@ -93,15 +93,28 @@ export const Login = () => {
                     <p className="text-slate-100 font-Regular text-xl mb-2">
                       Password
                     </p>
-                    <input
-                      type="password"
-                      value={password}
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                      }}
-                      className="w-full bg-[#09090b] text-neutral-400 text-xl font-Regular outline outline-1 outline-neutral-700 p-3 rounded-lg"
-                      placeholder=""
-                    />
+                    <div className="relative">
+                      {!hide ? (
+                        <FaRegEye
+                          className="absolute right-4 top-4 text-xl cursor-pointer"
+                          onClick={() => setHide(!hide)}
+                        />
+                      ) : (
+                        <FaRegEyeSlash
+                          className="absolute right-4 top-4 text-xl cursor-pointer"
+                          onClick={() => setHide(!hide)}
+                        />
+                      )}
+                      <input
+                        type={hide ? "password" : "text"}
+                        value={password}
+                        onChange={(e) => {
+                          setPassword(e.target.value);
+                        }}
+                        className="w-full bg-[#09090b] text-neutral-400 text-xl font-Regular outline outline-1 outline-neutral-700 p-3 rounded-lg"
+                        placeholder=""
+                      />
+                    </div>
                   </div>
                   <div className="w-full mt-4">
                     <button

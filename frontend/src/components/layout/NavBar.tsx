@@ -40,17 +40,17 @@ const NavBar = ({
   const navigate = useNavigate();
   //change of theme
   const { theme } = useTheme();
+  const { UserName } = FetchUsername();
 
   const logout = () => {
     navigate("/login");
     localStorage.removeItem("jwtToken");
   };
-  const { UserName } = FetchUsername();
   //For unique selection of options
-
   const handleClick = (button: any) => {
     setIsSelected(button);
   };
+  const handleInputChange = (e: string) => {};
 
   return (
     <div className="md:w-[300px] h-screen border-r p-2 flex flex-col justify-between transition-colors duration-100">
@@ -77,6 +77,7 @@ const NavBar = ({
           <Input
             className="md:w-[250px] md:h-10 rounded-2xl dark:placeholder:text-slate-400 placeholder:text-slate-500 dark:bg-[#333333] bg-[#e3e3e3] px-8 placeholder:font-semibold border-2 dark:border-[#444444] border-slate-400 placeholder:text-base dark:hover:bg-[#3c3c3c] hover:bg-slate-200 hover:ease-in-out duration-200 text-base"
             placeholder="Search"
+            type="text"
           />
         </div>
         <div className="dark:text-slate-300 text-slate-700 font-medium text-xs ubuntu-regular md:px-8 md:pt-6">

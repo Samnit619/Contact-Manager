@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "./Login/axiosInstance";
 import { Button } from "@/components/ui/button";
+import { FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -11,6 +13,7 @@ export default function Register() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [hide, setHide] = useState(true);
 
   setTimeout(() => {
     Setloading(false);
@@ -82,7 +85,7 @@ export default function Register() {
                       onChange={(e) => {
                         setUserName(e.target.value);
                       }}
-                      className="w-full bg-[#09090b] text-neutral-400 text-xl font-Regular outline outline-1 outline-neutral-700 p-3 rounded-lg"
+                      className="w-full bg-[#09090b] text-neutral-400 text-xl font-Regular outline outline-1 outline-neutral-700 p-3 rounded-lg focus:ring-blue-500 focus:ring-2 "
                       placeholder="Sam619"
                     />
                   </div>
@@ -105,15 +108,28 @@ export default function Register() {
                     <p className="text-slate-100 font-Regular text-xl mb-2">
                       Password
                     </p>
-                    <input
-                      type="password"
-                      value={password}
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                      }}
-                      className="w-full bg-[#09090b] text-neutral-400 text-xl font-Regular outline outline-1 outline-neutral-700 p-3 rounded-lg"
-                      placeholder=""
-                    />
+                    <div className="relative">
+                      {!hide ? (
+                        <FaRegEye
+                          className="absolute right-4 top-4 text-xl cursor-pointer"
+                          onClick={() => setHide(!hide)}
+                        />
+                      ) : (
+                        <FaRegEyeSlash
+                          className="absolute right-4 top-4 text-xl cursor-pointer"
+                          onClick={() => setHide(!hide)}
+                        />
+                      )}
+                      <input
+                        type={hide ? "password" : "text"}
+                        value={password}
+                        onChange={(e) => {
+                          setPassword(e.target.value);
+                        }}
+                        className="w-full bg-[#09090b] text-neutral-400 text-xl font-Regular outline outline-1 outline-neutral-700 p-3 rounded-lg"
+                        placeholder=""
+                      />
+                    </div>
                   </div>
                   <div className="w-full mt-4">
                     <Button

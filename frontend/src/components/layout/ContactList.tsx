@@ -64,29 +64,6 @@ const ContactList = ({
     }
   };
 
-  //fetch contacts
-  useEffect(() => {
-    const fetchContact = async () => {
-      try {
-        const res = await axiosInstance.get<Contacts[]>("/contacts");
-        const AlphaContacts = res.data.sort((a, b) =>
-          a.name.localeCompare(b.name)
-        );
-        const FavContacts = res.data.filter((contact) => {
-          return contact.fav == true;
-        });
-        setFavContact(FavContacts);
-
-        console.log(FavContacts);
-
-        setContactData(AlphaContacts);
-        setSortedArray(AlphaContacts);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchContact();
-  }, [refreshed]);
   //filtering favourite contacts
 
   console.log(sortedArray);
@@ -106,18 +83,22 @@ const ContactList = ({
   };
 
   return (
-    <div className="md:w-[575px] h-screen py-2 pl-3 pr-2 transition-colors duration-200">
-      <div className="text-sm ubuntu-regular dark:text-slate-400 text-slate-700 mx-5 mt-7">
+    <div className="w-full max-w-[600px] h-screen py-2 px-3 transition-colors duration-200 overflow-hidden">
+      <div className="text-sm ubuntu-regular dark:text-slate-400 text-slate-700 mx-5 mt-5 sm:mt-7">
         {IsSelected == "allPeople"
           ? `${sortedArray?.length} TOTAL`
           : IsSelected == "favourite"
           ? `${FavContact?.length} TOTAL`
           : "Loading..."}
       </div>
-      <div className="text-2xl ubuntu-medium text mx-5 py-1">Contacts</div>
-      <div className="flex gap-2 py-3">
+
+      <div className="text-xl sm:text-2xl ubuntu-medium text mx-5 py-1">
+        Contacts
+      </div>
+
+      <div className="flex flex-wrap gap-2 py-3 items-center">
         <Select>
-          <SelectTrigger className="w-[90px] h-7 ml-5 dark:bg-[#333333] bg-[#e3e3e3] flex justify-between font-medium text-slate-500 dark:text-slate-300 px-2 gap-1">
+          <SelectTrigger className="w-full sm:w-[90px] h-7 ml-5 dark:bg-[#333333] bg-[#e3e3e3] flex justify-between font-medium text-slate-500 dark:text-slate-300 px-2 gap-1">
             <SelectValue placeholder="Filter by" />
           </SelectTrigger>
           <SelectContent>
@@ -126,40 +107,41 @@ const ContactList = ({
             <SelectItem value="system">System</SelectItem>
           </SelectContent>
         </Select>
-        <div>
-          {
-            <SelectScrollable
-              contactData={contactData}
-              setSortedArray={setSortedArray}
-            />
-          }
+        <div className="w-full sm:w-auto">
+          <SelectScrollable
+            contactData={contactData}
+            setSortedArray={setSortedArray}
+          />
         </div>
       </div>
-      {IsSelected == "allPeople" ? (
-        <DisplayContacts
-          selContact={selContact}
-          setSortedArray={setSortedArray}
-          getInitials={getInitials}
-          handleFavoriteClick={handleFavoriteClick}
-          handleContact={handleContact}
-          sortedArray={sortedArray}
-          contactData={contactData}
-        />
-      ) : IsSelected == "favourite" ? (
-        <FavoriteContacts
-          selContact={selContact}
-          setSortedArray={setSortedArray}
-          getInitials={getInitials}
-          handleFavoriteClick={handleFavoriteClick}
-          handleContact={handleContact}
-          sortedArray={sortedArray}
-          FavContact={FavContact}
-          setFavContact={setFavContact}
-          contactData={contactData}
-        />
-      ) : (
-        <div className="mx-5 my-2">No Contacts</div>
-      )}
+
+      <div className="w-full overflow-hidden">
+        {IsSelected == "allPeople" ? (
+          <DisplayContacts
+            selContact={selContact}
+            setSortedArray={setSortedArray}
+            getInitials={getInitials}
+            handleFavoriteClick={handleFavoriteClick}
+            handleContact={handleContact}
+            sortedArray={sortedArray}
+            contactData={contactData}
+          />
+        ) : IsSelected == "favourite" ? (
+          <FavoriteContacts
+            selContact={selContact}
+            setSortedArray={setSortedArray}
+            getInitials={getInitials}
+            handleFavoriteClick={handleFavoriteClick}
+            handleContact={handleContact}
+            sortedArray={sortedArray}
+            FavContact={FavContact}
+            setFavContact={setFavContact}
+            contactData={contactData}
+          />
+        ) : (
+          <div className="mx-5 my-2 text-center text-lg">No Contacts</div>
+        )}
+      </div>
     </div>
   );
 };

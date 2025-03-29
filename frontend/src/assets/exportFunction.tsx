@@ -42,7 +42,7 @@ const DisplayContacts = ({
     console.log("Refreshed Contacts");
   }, [sortedArray]);
   return (
-    <ScrollArea className="flex-col h-[700px]  ">
+    <ScrollArea className="flex-col h-[700px]   ">
       {sortedArray &&
         sortedArray?.map((contact: any) => (
           <div
@@ -52,7 +52,7 @@ const DisplayContacts = ({
               selContact === contact._id
                 ? "bg-blue-600 text-slate-200"
                 : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200"
-            } group w-[500px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-1 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
+            } group min-w-[300px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-1 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
           >
             <div className="flex items-center gap-2">
               <Avatar className="h-11 w-11 rounded-full">
@@ -125,7 +125,7 @@ export const FavoriteContacts = ({
               selContact === contact._id
                 ? "bg-blue-600 text-slate-200"
                 : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200"
-            } group w-[500px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-1 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
+            } group min-w-[300px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-1 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
           >
             <div className="flex items-center gap-2">
               <Avatar className="h-11 w-11 rounded-full">
