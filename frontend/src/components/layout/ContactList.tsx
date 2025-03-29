@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useEffect } from "react";
+
 import { Contacts } from "@/App";
 import { SelectScrollable } from "./filter2";
 import DisplayContacts, { FavoriteContacts } from "@/assets/exportFunction";
@@ -15,7 +15,7 @@ import { Refreshed } from "@/pages/home";
 
 const ContactList = ({
   contactData,
-  setContactData,
+
   sortedArray,
   setSortedArray,
   IsSelected,
@@ -23,7 +23,6 @@ const ContactList = ({
   FavContact,
   handleContact,
   selContact,
-  setSelContact,
 }: {
   contactData: Contacts[] | null;
   setContactData: any;
@@ -37,6 +36,10 @@ const ContactList = ({
   setSelContact: any;
 }) => {
   const { refreshed, setRefreshed } = Refreshed();
+  const refreshing = () => {
+    setRefreshed(!refreshed);
+    refreshing();
+  };
   // Handle favorite contact click
   const handleFavoriteClick = async (contact: Contacts) => {
     try {

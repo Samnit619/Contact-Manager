@@ -2,10 +2,8 @@ import { ThemeProvider } from "./components/ui/theme-provider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Login } from "./pages/Login/login";
 import Home, { RefreshProvider } from "./pages/home";
-import { useEffect, useState } from "react";
-import { axiosInstance } from "./pages/Login/axiosInstance";
+
 import Register from "./pages/Register";
-import { CurrentUser } from "./assets/FetchUsername";
 
 export interface Contacts {
   user_id: string;

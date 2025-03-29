@@ -27,7 +27,6 @@ const DisplayContacts = ({
   handleContact,
   getInitials,
   handleFavoriteClick,
-  contactData,
 }: {
   sortedArray: Contacts[] | null;
   setSortedArray: any;
@@ -88,14 +87,13 @@ const DisplayContacts = ({
 
 export const FavoriteContacts = ({
   sortedArray,
-  setSortedArray,
+
   selContact,
   handleContact,
   getInitials,
   handleFavoriteClick,
   FavContact,
   setFavContact,
-  contactData,
 }: {
   sortedArray: Contacts[] | null;
   setSortedArray: any;
@@ -159,10 +157,7 @@ export const FavoriteContacts = ({
   );
 };
 
-export const AddContact = (
-  handleContact: any,
-  sortedArray: Contacts[] | null
-) => {
+export const AddContact = () => {
   const [Fname, setFname] = useState("");
   const [Lname, setLname] = useState("");
   const [email, setEmail] = useState("");
@@ -174,7 +169,10 @@ export const AddContact = (
   const { setRefreshed } = Refreshed();
 
   const isFormValid: boolean = phone.trim().length >= 10 && Fname.trim() !== "";
-
+  const Alert = () => {
+    setAlertVisible(!alertVisible);
+    Alert();
+  };
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
 

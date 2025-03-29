@@ -26,9 +26,8 @@ const NavBar = ({
   contactData,
   IsSelected,
   setIsSelected,
-  sortedArray,
+
   FavContact,
-  handleContact,
 }: {
   contactData: Contacts[] | null;
   IsSelected: any;
@@ -50,7 +49,6 @@ const NavBar = ({
   const handleClick = (button: any) => {
     setIsSelected(button);
   };
-  const handleInputChange = (e: string) => {};
 
   return (
     <div className="md:w-[300px] h-screen border-r p-2 flex flex-col justify-between transition-colors duration-100">
@@ -154,7 +152,7 @@ const NavBar = ({
             Events
           </Button>
         </div>
-        <AddContact handleContact={handleContact} sortedArray={sortedArray} />
+        <AddContact />
       </div>
       <div className="mx-3.5 flex items-center justify-between mb-2">
         <div className="flex gap-2 dark:text-slate-200 ubuntu-medium text-slate-700 items-center dark:hover:bg-slate-800 hover:bg-slate-200 rounded-xl px-2 py-1 cursor-pointer">
