@@ -21,13 +21,17 @@ import { Contacts } from "@/App";
 import { useNavigate } from "react-router-dom";
 import FetchUsername from "@/assets/FetchUsername";
 import { AddContact } from "@/assets/exportFunction";
+import { useState } from "react";
+import { User } from "lucide-react";
 
 const NavBar = ({
   contactData,
   IsSelected,
   setIsSelected,
-
+  setSortedArray,
+  sortedArray,
   FavContact,
+  getInitials,
 }: {
   contactData: Contacts[] | null;
   IsSelected: any;
@@ -35,12 +39,42 @@ const NavBar = ({
   sortedArray: Contacts[] | null;
   FavContact: Contacts[] | null;
   handleContact: any;
+  setSortedArray: any;
+  getInitials: any;
 }) => {
   const navigate = useNavigate();
+  const [value, setValue] = useState("");
   //change of theme
   const { theme } = useTheme();
   const { UserName } = FetchUsername();
 
+  //Input change
+  const HandleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setValue(inputValue);
+
+    if (inputValue !== "") {
+      const lowerInput = inputValue.toLowerCase();
+
+      const filtered = contactData
+        ?.filter((contact) => contact.name.toLowerCase().includes(lowerInput))
+        .sort((a, b) => {
+          const nameA = a.name.toLowerCase();
+          const nameB = b.name.toLowerCase();
+
+          const aStarts = nameA.startsWith(lowerInput);
+          const bStarts = nameB.startsWith(lowerInput);
+
+          if (aStarts && !bStarts) return -1;
+          if (!aStarts && bStarts) return 1;
+          return 0;
+        });
+
+      setSortedArray(filtered);
+    } else {
+      setSortedArray(contactData);
+    }
+  };
   const logout = () => {
     navigate("/login");
     localStorage.removeItem("jwtToken");
@@ -73,6 +107,8 @@ const NavBar = ({
             <IoIosSearch className=" dark:text-slate-400 text-slate-500 font-bold" />
           </div>
           <Input
+            value={value}
+            onChange={HandleInput}
             className="md:w-[250px] md:h-10 rounded-2xl dark:placeholder:text-slate-400 placeholder:text-slate-500 dark:bg-[#333333] bg-[#e3e3e3] px-8 placeholder:font-semibold border-2 dark:border-[#444444] border-slate-400 placeholder:text-base dark:hover:bg-[#3c3c3c] hover:bg-slate-200 hover:ease-in-out duration-200 text-base"
             placeholder="Search"
             type="text"
@@ -89,15 +125,15 @@ const NavBar = ({
               IsSelected === "allPeople"
                 ? "dark:bg-[#333333] bg-[#e3e3e3] hover:bg-[#e3e3e3] "
                 : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 "
-            } w-[250px] rounded-2xl dark:text-slate-300 text-slate-700 justify-start ubuntu-regular gap-2 text-base pr-1`}
+            } w-[250px] rounded-2xl dark:text-slate-300 text-slate-800 justify-start ubuntu-regular gap-2 text-base pr-1`}
           >
             <IoMdContacts className="text-xl" />
             All People
             <div
               className={`${
                 IsSelected == "allPeople"
-                  ? "bg-blue-600 ease-in-out duration-150 text-slate-200"
-                  : "dark:bg-[#333333] bg-[#e3e3e3] text-slate-600"
+                  ? "bg-blue-500 dark:bg-blue-600 ease-in-out duration-150 text-slate-200"
+                  : "dark:bg-[#333333] bg-[#e3e3e3] text-slate-800"
               } flex w-10 h-7  rounded-xl unbuntu-regular font-medium ml-[77px]  dark:text-slate-200 justify-center items-center`}
             >
               {contactData ? contactData.length : ""}
@@ -111,15 +147,15 @@ const NavBar = ({
               IsSelected === "favourite"
                 ? "dark:bg-[#333333] bg-[#e3e3e3] hover:bg-[#e3e3e3] "
                 : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200"
-            } w-[250px] rounded-2xl  dark:text-slate-300 text-slate-700 justify-start ubuntu-regular gap-2 text-base pr-1`}
+            } w-[250px] rounded-2xl  dark:text-slate-300 text-slate-800 justify-start ubuntu-regular gap-2 text-base pr-1`}
           >
             <FaRegStar className="text-xl" />
             Favourites
             <div
               className={`${
                 IsSelected == "favourite"
-                  ? "bg-blue-600 ease-in-out duration-150 text-slate-200"
-                  : "dark:bg-[#333333] bg-[#e3e3e3] text-slate-600"
+                  ? "bg-blue-500 dark:bg-blue-600 ease-in-out duration-150 text-slate-200"
+                  : "dark:bg-[#333333] bg-[#e3e3e3] text-slate-800"
               } flex w-10 h-7  rounded-xl unbuntu-regular font-medium ml-[77px]  dark:text-slate-200 justify-center items-center`}
             >
               {FavContact ? FavContact.length : ""}
@@ -133,7 +169,7 @@ const NavBar = ({
               IsSelected === "tagged"
                 ? "dark:bg-[#333333] bg-[#e3e3e3] hover:bg-[#e3e3e3]  "
                 : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200"
-            } w-[250px] rounded-2xl  dark:text-slate-300 text-slate-700 justify-start ubuntu-regular gap-2 text-base `}
+            } w-[250px] rounded-2xl  dark:text-slate-300 text-slate-800 justify-start ubuntu-regular gap-2 text-base `}
           >
             <LuTags className="text-xl" />
             Tagged
@@ -146,7 +182,7 @@ const NavBar = ({
               IsSelected === "events"
                 ? "dark:bg-[#333333] bg-[#e3e3e3] hover:bg-[#e3e3e3] "
                 : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200"
-            } w-[250px] rounded-2xl  dark:text-slate-300 text-slate-700 justify-start ubuntu-regular gap-2 text-base `}
+            } w-[250px] rounded-2xl  dark:text-slate-300 text-slate-800 justify-start ubuntu-regular gap-2 text-base `}
           >
             <MdEventNote className="text-xl" />
             Events
@@ -155,16 +191,15 @@ const NavBar = ({
         <AddContact />
       </div>
       <div className="mx-3.5 flex items-center justify-between mb-2">
-        <div className="flex gap-2 dark:text-slate-200 ubuntu-medium text-slate-700 items-center dark:hover:bg-slate-800 hover:bg-slate-200 rounded-xl px-2 py-1 cursor-pointer">
+        <div className="flex gap-2 dark:text-slate-200 ubuntu-medium text-slate-800 items-center dark:hover:bg-slate-800 hover:bg-slate-200 rounded-xl px-2 py-1 cursor-pointer">
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-2">
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback>{getInitials(UserName)}</AvatarFallback>
               </Avatar>
               {UserName ? UserName : "Login"}
             </DropdownMenuTrigger>
-            <DropdownMenuContent className=" ubuntu-regular bg-black rounded-xl">
+            <DropdownMenuContent className=" ubuntu-regular dark:bg-black rounded-xl">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>

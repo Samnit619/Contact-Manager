@@ -49,15 +49,15 @@ const DisplayContacts = ({
             onClick={() => handleContact(contact._id)}
             className={`${
               selContact === contact._id
-                ? "bg-blue-600 text-slate-200"
-                : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200"
+                ? "bg-blue-500 dark:bg-blue-600 text-slate-200"
+                : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200"
             } group min-w-[300px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-1 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
           >
             <div className="flex items-center gap-2">
               <Avatar className="h-11 w-11 rounded-full">
                 <AvatarImage src="" />
                 <AvatarFallback
-                  className={`dark:bg-[#333333] bg-[#e3e3e3] text-slate-700 dark:text-slate-200`}
+                  className={`dark:bg-[#333333] bg-[#e3e3e3] text-slate-800 dark:text-slate-200`}
                 >
                   {getInitials(contact.name)}
                 </AvatarFallback>
@@ -70,13 +70,13 @@ const DisplayContacts = ({
               className={`${contact.fav ? "flex" : "hidden"} ${
                 selContact === contact._id
                   ? "border-slate-200"
-                  : "dark:border-slate-300 border-slate-500"
+                  : "dark:border-slate-300 border-slate-400 "
               } h-11 w-11 border rounded-full items-center justify-center group-hover:flex group-hover:cursor-pointer`}
             >
               <FaStar
                 className={`${
                   selContact === contact._id ? "text-slate-200" : ""
-                } dark:text-slate-200 cursor-pointer `}
+                } dark:text-slate-200 text-slate-600 cursor-pointer `}
               />
             </div>
           </div>
@@ -121,7 +121,7 @@ export const FavoriteContacts = ({
             onClick={() => handleContact(contact._id)}
             className={`${
               selContact === contact._id
-                ? "bg-blue-600 text-slate-200"
+                ? "bg-blue-500 dark:bg-blue-600 text-slate-200"
                 : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200"
             } group min-w-[300px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-1 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
           >
@@ -213,12 +213,12 @@ export const AddContact = () => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className=" h-3 w-[250px] py-5 hover:bg-blue-500 bg-blue-600 rounded-2xl flex justify-center mx-5 my-3 text-white ubuntu-regular text-base gap-1">
+        <Button className=" h-3 w-[250px] py-5 hover:bg-blue-400 bg-blue-500 dark:bg-blue-600 rounded-2xl flex justify-center mx-5 my-3 text-white ubuntu-regular text-base gap-1">
           Add Contact
           <div className="flex text-2xl h-10 items-center pb-2 pt-1.5">+</div>
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-[#101010] border-2 border-[#666666]">
+      <DialogContent className="dark:bg-[#101010] bg-[#FAFAFA] border-2 border-[#666666]">
         <DialogHeader>
           <DialogTitle className="text-2xl">Add new contact</DialogTitle>
           <DialogDescription>
@@ -237,7 +237,7 @@ export const AddContact = () => {
                   id="Fname"
                   value={Fname}
                   onChange={(e) => setFname(e.target.value)}
-                  className="w-[120px] bg-[#000000] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
+                  className="w-[120px] dark:bg-[#000000] bg-[#FAFAFA] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
                   required
                 />
                 <Input
@@ -245,7 +245,7 @@ export const AddContact = () => {
                   id="Lname"
                   value={Lname}
                   onChange={(e) => setLname(e.target.value)}
-                  className="w-[120px]  bg-[#000000] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
+                  className="w-[120px]  dark:bg-[#000000] bg-[#FAFAFA] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
                   required
                 />
               </div>
@@ -260,7 +260,7 @@ export const AddContact = () => {
                 id="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-[250px] bg-[#000000] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
+                className="w-[250px] dark:bg-[#000000] bg-[#FAFAFA] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
                 required
               />
             </div>
@@ -278,7 +278,7 @@ export const AddContact = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-[250px] bg-[#000000] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
+                className="w-[250px] dark:bg-[#000000] bg-[#FAFAFA] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
               />
             </div>
 
@@ -291,7 +291,7 @@ export const AddContact = () => {
                 id="relation"
                 value={relation}
                 onChange={(e) => setRelation(e.target.value)}
-                className="w-[250px] bg-[#000000] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
+                className="w-[250px] dark:bg-[#000000] bg-[#FAFAFA] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
               />
             </div>
 
@@ -304,7 +304,7 @@ export const AddContact = () => {
                 id="tags"
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
-                className="w-[250px] bg-[#000000] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
+                className="w-[250px] dark:bg-[#000000] bg-[#FAFAFA] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
               />
             </div>
 
@@ -317,7 +317,7 @@ export const AddContact = () => {
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-[250px] bg-[#000000] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
+                className="w-[250px] dark:bg-[#000000] bg-[#FAFAFA] border-2 border-[#424242] placeholder:text-[#424242] font-medium"
               />
             </div>
           </div>

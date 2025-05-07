@@ -15,7 +15,7 @@ import { Refreshed } from "@/pages/home";
 
 const ContactList = ({
   contactData,
-
+  getInitials,
   sortedArray,
   setSortedArray,
   IsSelected,
@@ -34,6 +34,7 @@ const ContactList = ({
   handleContact: any;
   selContact: string | null;
   setSelContact: any;
+  getInitials: any;
 }) => {
   const { refreshed, setRefreshed } = Refreshed();
   const refreshing = () => {
@@ -74,17 +75,6 @@ const ContactList = ({
   //random colors array
   //const colors = ["#e75d7c","#b16cef","#53cca4","#efc84d","#628ef0","#184b73","#883e7f","#ed048b",];
 
-  //function to get initials of name
-  const getInitials = function (string: string) {
-    const names = string.split(" ");
-    let initials = names[0].substring(0, 1).toUpperCase();
-
-    if (names.length > 1) {
-      initials += names[names.length - 1].substring(0, 1).toUpperCase();
-    }
-    return initials;
-  };
-
   return (
     <div className="w-full max-w-[600px] h-screen py-2 px-3 transition-colors duration-200 overflow-hidden">
       <div className="text-sm ubuntu-regular dark:text-slate-400 text-slate-700 mx-5 mt-5 sm:mt-7">
@@ -105,9 +95,8 @@ const ContactList = ({
             <SelectValue placeholder="Filter by" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="light">Light</SelectItem>
-            <SelectItem value="dark">Dark</SelectItem>
-            <SelectItem value="system">System</SelectItem>
+            <SelectItem value="date">Date Created</SelectItem>
+            <SelectItem value="desc">Descending</SelectItem>
           </SelectContent>
         </Select>
         <div className="w-full sm:w-auto">

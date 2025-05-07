@@ -35,11 +35,13 @@ const Manager = ({
   sortedArray,
   setSelContact,
   setSortedArray,
+  getInitials,
 }: {
   selContact: string | null;
   sortedArray: Contacts[] | null;
   setSelContact: any;
   setSortedArray: any;
+  getInitials: any;
 }) => {
   //storing selected contact details
   const [contactDetails, setContactDetails] = useState<Contacts | null>(null);
@@ -211,16 +213,18 @@ const Manager = ({
               editContact ? "flex" : "hidden"
             } h-[35px] w-[80px] rounded-lg bg-blue-700 hover:bg-blue-600 transition-colors duration-200 py-1 px-2.5 justify-center items-center gap-1 cursor-pointer  `}
           >
-            <IoMdCheckmark className="" />
-            <div className="ubuntu-regular text-base">Done</div>
+            <IoMdCheckmark className="dark:text-[#121212] text-slate-100" />
+            <div className="ubuntu-regular text-base dark:text-[#121212] text-slate-100">
+              Done
+            </div>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-2">
-              <Button className="rounded-lg py-0 px-2 h-[35px] w-[35px] dark:bg-[#333333] bg-[#FAFAFA]">
+              <Button className="rounded-lg py-0 px-2 h-[35px] w-[35px] dark:bg-[#333333] bg-[#FAFAFA] hover:bg-slate-100">
                 <SlOptions className="w-4 dark:text-[#e3e3e3] text-[#333333] " />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className=" ubuntu-regular bg-black rounded-xl">
+            <DropdownMenuContent className=" ubuntu-regular dark:bg-black rounded-xl">
               <DropdownMenuLabel>Options</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => DeleteContact()}>
@@ -234,8 +238,9 @@ const Manager = ({
         </div>
         <div className="h-[220px] pr-4 pl-10 flex justify-center gap-4 ">
           <Avatar className=" rounded-full w-[175px] h-[175px] ">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback className="text-7xl ubuntu-regular dark:bg-slate-700/50 bg-slate-200/50">
+              {contactDetails ? getInitials(contactDetails.name) : ""}
+            </AvatarFallback>
           </Avatar>
           <div className="w-[220px]">
             <div className="text-2xl ubuntu-bold text-[#121212] dark:text-[#e3e3e3]">
@@ -353,7 +358,7 @@ const Manager = ({
                   type="email"
                   value={FormData.email}
                   placeholder="Add email"
-                  className="bg-[#121212] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                  className="dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
                 />
               )}
             </div>
@@ -387,7 +392,7 @@ const Manager = ({
                   type="text"
                   value={FormData.location}
                   placeholder="Add location"
-                  className="bg-[#121212] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                  className="dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
                 />
               )}
             </div>
@@ -421,7 +426,7 @@ const Manager = ({
                   type="text"
                   value={FormData.home}
                   placeholder="Add Address"
-                  className="bg-[#121212] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                  className="dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
                 />
               )}
             </div>
@@ -448,7 +453,7 @@ const Manager = ({
                 contactDetails?.birthday || "No Date"
               ) : (
                 <DatePicker
-                  className=" bg-[#121212] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                  className=" dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
                   selected={
                     FormData.birthday ? new Date(FormData.birthday) : null
                   }

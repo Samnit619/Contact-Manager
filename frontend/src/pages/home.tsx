@@ -50,8 +50,10 @@ const Home = () => {
   const [sortedArray, setSortedArray] = useState<Contacts[] | null>(
     contactData
   );
+
   //Navbar button selection
   const [IsSelected, setIsSelected] = useState("allPeople");
+
   //Navbar Fav Contact
   const [FavContact, setFavContact] = useState<Contacts[] | null>(null);
 
@@ -90,6 +92,17 @@ const Home = () => {
     };
     fetchContact();
   }, [refreshed]);
+
+  //function to get initials of name
+  const getInitials = function (string: string) {
+    const names = string.split(" ");
+    let initials = names[0].substring(0, 1).toUpperCase();
+
+    if (names.length > 1) {
+      initials += names[names.length - 1].substring(0, 1).toUpperCase();
+    }
+    return initials;
+  };
   useEffect(() => {
     if (!localStorage.getItem("jwtToken")) {
       navigate("/login");
@@ -105,6 +118,8 @@ const Home = () => {
           setIsSelected={setIsSelected}
           FavContact={FavContact}
           handleContact={handleContact}
+          setSortedArray={setSortedArray}
+          getInitials={getInitials}
         />
         <ContactList
           setFavContact={setFavContact}
@@ -117,12 +132,14 @@ const Home = () => {
           selContact={selContact}
           setSelContact={setContactData}
           handleContact={handleContact}
+          getInitials={getInitials}
         />
         <Manager
           selContact={selContact}
           sortedArray={sortedArray}
           setSelContact={setSelContact}
           setSortedArray={setSortedArray}
+          getInitials={getInitials}
         />
       </div>
     </div>

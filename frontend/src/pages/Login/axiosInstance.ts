@@ -10,12 +10,12 @@ axiosInstance.interceptors.request.use((config) => {
     const token = localStorage.getItem('jwtToken');
 
     //using token in http header
-    console.log("Retrived Token: ",token);
-    if(token){
+    console.log("Retrived Token: ", token);
+    if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
     }
 
     return config;
-},(error) => {
+}, (error) => {
     return Promise.reject(error);
 })
