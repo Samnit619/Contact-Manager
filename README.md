@@ -31,9 +31,17 @@
 - JSON Web Tokens (JWT)
 
 ---
+## 🧠 Future Enhancements
 
+-💬 Real-time messaging between users
+-🗂️ Categorize contacts into groups (e.g., Work, Family, Friends)
+-📄 Export contacts to CSV or PDF
+-📱 Mobile-friendly and responsive UI
+-📥 Import contacts from CSV
+-🔔 Add contact notes and reminders
+-🌐 Multi-language support
 ## 📦 Installation
-
+---
 ```bash
 # Clone the repository
 git clone https://github.com/Samnit619/Contact-Manager.git
@@ -50,13 +58,5 @@ npm install
 # Run the app
 npm run dev
 
-## 🧠 Future Enhancements
 
--💬 Real-time messaging between users
--🗂️ Categorize contacts into groups (e.g., Work, Family, Friends)
--📄 Export contacts to CSV or PDF
--📱 Mobile-friendly and responsive UI
--📥 Import contacts from CSV
--🔔 Add contact notes and reminders
--🌐 Multi-language support
 
