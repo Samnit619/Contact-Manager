@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { FaRegStar } from "react-icons/fa";
 import { LuTags } from "react-icons/lu";
 import { MdEventNote } from "react-icons/md";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LuSettings } from "react-icons/lu";
 import { useTheme } from "../ui/theme-provider";
 import {
@@ -22,14 +22,12 @@ import { useNavigate } from "react-router-dom";
 import FetchUsername from "@/assets/FetchUsername";
 import { AddContact } from "@/assets/exportFunction";
 import { useState } from "react";
-import { User } from "lucide-react";
 
 const NavBar = ({
   contactData,
   IsSelected,
   setIsSelected,
   setSortedArray,
-  sortedArray,
   FavContact,
   getInitials,
 }: {
