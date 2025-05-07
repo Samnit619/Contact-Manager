@@ -11,7 +11,7 @@
 - 🔍 Real-time search and filter functionality  
 - 🧾 View detailed contact information  
 - 🎨 Minimal and intuitive UI design
-
+- 🌓 Light and dark mode toggle
 ---
 
 ## 🛠️ Tech Stack
