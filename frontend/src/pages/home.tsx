@@ -46,6 +46,7 @@ const Home = () => {
   const { refreshed } = Refreshed();
   const navigate = useNavigate();
   const [contactData, setContactData] = useState<Contacts[] | null>(null);
+
   //Contact Data after sorting
   const [sortedArray, setSortedArray] = useState<Contacts[] | null>(
     contactData

@@ -54,7 +54,7 @@ export const Login = () => {
           <div className="w-[50%] h-screen  hidden sm:block  bg-gradient-to-r from-transparent to-black ">
             <img
               className="w-[100%] h-screen object-cover bg-fixed"
-              src="../../public/login/login.avif"
+              src="../../public/login/login1.jpg"
               alt="no img"
             />
 

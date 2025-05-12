@@ -17,6 +17,7 @@ import { ScrollArea } from "@/components/ui/scrollArea";
 
 import { Refreshed } from "@/pages/home";
 import { axiosInstance } from "@/pages/Login/axiosInstance";
+
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 
@@ -75,8 +76,10 @@ const DisplayContacts = ({
             >
               <FaStar
                 className={`${
-                  selContact === contact._id ? "text-slate-200" : ""
-                } dark:text-slate-200 text-slate-600 cursor-pointer `}
+                  selContact === contact._id
+                    ? "text-slate-200"
+                    : "text-slate-600"
+                } dark:text-slate-200  cursor-pointer `}
               />
             </div>
           </div>
@@ -87,7 +90,6 @@ const DisplayContacts = ({
 
 export const FavoriteContacts = ({
   sortedArray,
-
   selContact,
   handleContact,
   getInitials,
@@ -157,6 +159,124 @@ export const FavoriteContacts = ({
   );
 };
 
+export const TaggedContacts = ({
+  sortedArray,
+
+  selContact,
+  handleContact,
+  getInitials,
+  handleFavoriteClick,
+  TagArray,
+  setTagArray,
+}: {
+  sortedArray: Contacts[] | null;
+  setSortedArray: any;
+  selContact: any;
+  handleContact: any;
+  getInitials: any;
+  handleFavoriteClick: any;
+  contactData: Contacts[] | null;
+  TagArray: Contacts[] | null;
+  setTagArray: any;
+}) => {
+  const [SelectedTag, setSelectedTag] = useState("family");
+
+  const HandleTags = (value: string) => {
+    setSelectedTag(value);
+    console.log(SelectedTag);
+  };
+  useEffect(() => {
+    if (!sortedArray) return;
+
+    const filtered = sortedArray.filter(
+      (contact) =>
+        contact.relation.toLowerCase() === SelectedTag.toLowerCase() ||
+        contact.tags?.some(
+          (tag) => tag.toLowerCase() === SelectedTag.toLowerCase()
+        )
+    );
+
+    setTagArray(filtered);
+  }, [SelectedTag, sortedArray]);
+
+  return (
+    <div>
+      <div className="flex mx-5 gap-2 mb-4">
+        <Button
+          className={`${
+            SelectedTag == "family"
+              ? "bg-blue-600 hover:bg-blue-600"
+              : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-[#333333]"
+          } border-2 border-blue-600 px-4 h-7 rounded-md dark:text-[#FAFAFA] `}
+          onClick={() => HandleTags("family")}
+        >
+          Family
+        </Button>
+        <Button
+          className={`${
+            SelectedTag == "work"
+              ? "bg-blue-600 hover:bg-blue-600"
+              : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-[#333333]"
+          } border-2 border-blue-600 px-4 h-7 rounded-md dark:text-[#FAFAFA] `}
+          onClick={() => HandleTags("work")}
+        >
+          Work
+        </Button>
+        <Button
+          className={`${
+            SelectedTag == "friend"
+              ? "bg-blue-600 hover:bg-blue-600"
+              : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-[#333333]"
+          } border-2 border-blue-600 px-4 h-7 rounded-md dark:text-[#FAFAFA]`}
+          onClick={() => HandleTags("friend")}
+        >
+          Friend
+        </Button>
+      </div>
+      <ScrollArea className="flex-col">
+        {TagArray &&
+          TagArray.map((contact: any) => (
+            <div
+              key={contact._id}
+              onClick={() => handleContact(contact._id)}
+              className={`${
+                selContact === contact._id
+                  ? "bg-blue-500 dark:bg-blue-600 text-slate-200"
+                  : "bg-transparent dark:hover:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200"
+              } group min-w-[300px] h-[55px] rounded-full flex items-center justify-between px-1.5 mx-5 mb-1 gap-2 ubuntu-regular transition-colors ease-in-out duration-150`}
+            >
+              <div className="flex items-center gap-2">
+                <Avatar className="h-11 w-11 rounded-full">
+                  <AvatarImage src="" />
+                  <AvatarFallback
+                    className={`dark:bg-[#333333] bg-[#e3e3e3] text-slate-800 dark:text-slate-200`}
+                  >
+                    {getInitials(contact.name)}
+                  </AvatarFallback>
+                </Avatar>
+                {contact.name}
+              </div>
+
+              <div
+                onClick={() => handleFavoriteClick(contact)}
+                className={`${contact.fav ? "flex" : "hidden"} ${
+                  selContact === contact._id
+                    ? "border-slate-200"
+                    : "dark:border-slate-300 border-slate-400 "
+                } h-11 w-11 border rounded-full items-center justify-center group-hover:flex group-hover:cursor-pointer`}
+              >
+                <FaStar
+                  className={`${
+                    selContact === contact._id ? "text-slate-200" : ""
+                  } dark:text-slate-200 text-slate-600 cursor-pointer `}
+                />
+              </div>
+            </div>
+          ))}
+      </ScrollArea>
+    </div>
+  );
+};
 export const AddContact = () => {
   const [Fname, setFname] = useState("");
   const [Lname, setLname] = useState("");

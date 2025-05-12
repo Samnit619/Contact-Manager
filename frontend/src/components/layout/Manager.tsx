@@ -213,10 +213,8 @@ const Manager = ({
               editContact ? "flex" : "hidden"
             } h-[35px] w-[80px] rounded-lg bg-blue-700 hover:bg-blue-600 transition-colors duration-200 py-1 px-2.5 justify-center items-center gap-1 cursor-pointer  `}
           >
-            <IoMdCheckmark className="dark:text-[#121212] text-slate-100" />
-            <div className="ubuntu-regular text-base dark:text-[#121212] text-slate-100">
-              Done
-            </div>
+            <IoMdCheckmark className=" text-slate-100" />
+            <div className="ubuntu-regular text-base text-slate-100">Done</div>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-2">
@@ -311,9 +309,9 @@ const Manager = ({
 
       <div className="px-5 py-7 dark:bg-[#333333]/40 bg-[#e3e3e3] rounded-2xl h-[calc(100vh-310px)] ">
         <div className=" grid-cols-2 grid gap-2 ">
-          <div className="dark:bg-[#121212] bg-[#FAFAFA] p-4 max-w-[334px] h-[60px] rounded-xl items-center flex justify-between ubuntu-medium">
-            <div className="flex gap-4 items-center" /* phone number*/>
-              <LuPhoneCall className="text-xl" />
+          <div className="dark:bg-[#121212] bg-[#FAFAFA] p-4 max-w-[334px] h-[60px] rounded-xl items-center flex justify-between ubuntu-medium 2xl:text-base xl:text-sm">
+            <div className="relative flex gap-4 items-center" /* phone number*/>
+              <LuPhoneCall className="xl:text-lg md:text-lg 2xl:text-xl" />
               {!openEdit.phone ? (
                 contactDetails?.phone
               ) : (
@@ -324,7 +322,7 @@ const Manager = ({
                   value={FormData.phone}
                   maxLength={10}
                   placeholder="Add phone"
-                  className="dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                  className="dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-full ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
                 />
               )}
             </div>
@@ -344,11 +342,11 @@ const Manager = ({
               />
             )}
           </div>
-          <div className="dark:bg-[#121212] bg-[#FAFAFA] p-4 max-w-[334px] h-[60px] rounded-xl items-center flex justify-between ubuntu-medium">
+          <div className="dark:bg-[#121212] bg-[#FAFAFA] p-4 max-w-[334px] h-[60px] rounded-xl items-center flex justify-between ubuntu-medium 2xl:text-base xl:text-sm">
             <div
-              className="flex gap-4 justify-center items-center" /*Email address*/
+              className="relative flex gap-4 justify-center items-center" /*Email address*/
             >
-              <LuMail className="text-xl" />
+              <LuMail className="xl:text-lg md:text-lg 2xl:text-xl" />
               {!openEdit.email ? (
                 contactDetails?.email
               ) : (
@@ -358,7 +356,7 @@ const Manager = ({
                   type="email"
                   value={FormData.email}
                   placeholder="Add email"
-                  className="dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                  className="dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-full ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
                 />
               )}
             </div>
@@ -378,11 +376,11 @@ const Manager = ({
               />
             )}
           </div>
-          <div className="dark:bg-[#121212] bg-[#FAFAFA] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex justify-between ubuntu-medium">
+          <div className="dark:bg-[#121212] bg-[#FAFAFA] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex justify-between ubuntu-medium 2xl:text-base xl:text-sm">
             <div
-              className="flex gap-4 justify-center items-center" /*Location*/
+              className="flex relative gap-4 justify-center items-center" /*Location*/
             >
-              <GrLocation className="text-xl" />
+              <GrLocation className="xl:text-lg md:text-lg 2xl:text-xl" />
               {!openEdit.location ? (
                 contactDetails?.location || "Location"
               ) : (
@@ -392,7 +390,7 @@ const Manager = ({
                   type="text"
                   value={FormData.location}
                   placeholder="Add location"
-                  className="dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                  className="dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-full ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
                 />
               )}
             </div>
@@ -412,11 +410,11 @@ const Manager = ({
               />
             )}
           </div>
-          <div className="dark:bg-[#121212] bg-[#FAFAFA] p-4 max-w-[334px] h-[60px] rounded-xl items-center flex justify-between ubuntu-medium">
+          <div className="dark:bg-[#121212] bg-[#FAFAFA] p-4 max-w-[334px] h-[60px] rounded-xl items-center flex justify-between ubuntu-medium 2xl:text-base xl:text-sm">
             <div
-              className="flex gap-4 justify-center items-center" /*Home address*/
+              className="flex relative gap-4 justify-center items-center " /*Home address*/
             >
-              <GrHomeRounded className="text-lg" />
+              <GrHomeRounded className="xl:text-lg md:text-lg 2xl:text-xl" />
               {!openEdit.home ? (
                 contactDetails?.home || "Home address"
               ) : (
@@ -426,7 +424,7 @@ const Manager = ({
                   type="text"
                   value={FormData.home}
                   placeholder="Add Address"
-                  className="dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                  className="dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-full ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
                 />
               )}
             </div>
@@ -444,16 +442,16 @@ const Manager = ({
               />
             )}
           </div>
-          <div className="dark:bg-[#121212] bg-[#FAFAFA] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex justify-between ubuntu-medium">
+          <div className="dark:bg-[#121212] bg-[#FAFAFA] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex justify-between ubuntu-medium 2xl:text-base xl:text-sm">
             <div
-              className="flex gap-4 justify-center items-center" /*Birthday*/
+              className="flex relative gap-4 justify-center items-center" /*Birthday*/
             >
-              <PiCake className="text-[22px]" />
+              <PiCake className="xl:text-[20px] md:text-[20px] 2xl:text-[22px] " />
               {!openEdit.birthday ? (
                 contactDetails?.birthday || "No Date"
               ) : (
                 <DatePicker
-                  className=" dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-[230px] ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+                  className=" dark:bg-[#121212] bg-[#FAFAFA] placeholder:text-slate-50 w-full ubuntu-medium border p-1 rounded-md outline-none focus:ring-2 focus:ring-blue-500"
                   selected={
                     FormData.birthday ? new Date(FormData.birthday) : null
                   }
@@ -489,7 +487,7 @@ const Manager = ({
               />
             )}
           </div>
-          <div className="dark:bg-[#121212] bg-[#FAFAFA] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex gap-4 ubuntu-medium">
+          <div className="dark:bg-[#121212] bg-[#FAFAFA] p-4 max-w-[334px] h-[60px] rounded-xl  items-center flex gap-4 ubuntu-medium 2xl:text-base xl:text-sm">
             <FaRegHeart className="text-lg" /> {contactDetails?.relation}
           </div>
         </div>

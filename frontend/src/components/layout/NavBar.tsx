@@ -199,9 +199,7 @@ const NavBar = ({
             </DropdownMenuTrigger>
             <DropdownMenuContent className=" ubuntu-regular dark:bg-black rounded-xl">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
+
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => logout()}>
                 {UserName ? "Logout" : "Login"}

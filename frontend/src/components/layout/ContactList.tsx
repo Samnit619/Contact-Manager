@@ -9,9 +9,13 @@ import {
 
 import { Contacts } from "@/App";
 import { SelectScrollable } from "./filter2";
-import DisplayContacts, { FavoriteContacts } from "@/assets/exportFunction";
+import DisplayContacts, {
+  FavoriteContacts,
+  TaggedContacts,
+} from "@/assets/exportFunction";
 import { axiosInstance } from "@/pages/Login/axiosInstance";
 import { Refreshed } from "@/pages/home";
+import { useState } from "react";
 
 const ContactList = ({
   contactData,
@@ -37,6 +41,7 @@ const ContactList = ({
   getInitials: any;
 }) => {
   const { refreshed, setRefreshed } = Refreshed();
+  const [TagArray, setTagArray] = useState<Contacts[] | null>(null);
   const refreshing = () => {
     setRefreshed(!refreshed);
     refreshing();
@@ -82,6 +87,8 @@ const ContactList = ({
           ? `${sortedArray?.length} TOTAL`
           : IsSelected == "favourite"
           ? `${FavContact?.length} TOTAL`
+          : IsSelected == "tagged"
+          ? `${TagArray?.length} TOTAL`
           : "Loading..."}
       </div>
 
@@ -129,6 +136,18 @@ const ContactList = ({
             FavContact={FavContact}
             setFavContact={setFavContact}
             contactData={contactData}
+          />
+        ) : IsSelected == "tagged" ? (
+          <TaggedContacts
+            selContact={selContact}
+            setSortedArray={setSortedArray}
+            getInitials={getInitials}
+            handleFavoriteClick={handleFavoriteClick}
+            handleContact={handleContact}
+            sortedArray={sortedArray}
+            contactData={contactData}
+            TagArray={TagArray}
+            setTagArray={setTagArray}
           />
         ) : (
           <div className="mx-5 my-2 text-center text-lg">No Contacts</div>
