@@ -11,7 +11,8 @@
 - 🔍 Real-time search and filter functionality  
 - 🧾 View detailed contact information  
 - 🎨 Minimal and intuitive UI design
-
+- 🌓 Light and dark mode toggle
+- 🗂️ Categorize contacts into groups (e.g., Work, Family, Friends)
 ---
 
 ## 🛠️ Tech Stack
@@ -33,13 +34,13 @@
 ---
 ## 🧠 Future Enhancements
 
--💬 Real-time messaging between users
--🗂️ Categorize contacts into groups (e.g., Work, Family, Friends)
--📄 Export contacts to CSV or PDF
--📱 Mobile-friendly and responsive UI
--📥 Import contacts from CSV
--🔔 Add contact notes and reminders
--🌐 Multi-language support
+- 💬 Real-time messaging between users
+- 📄 Export contacts to CSV or PDF
+- 📱 Mobile-friendly and responsive UI
+- 📥 Import contacts from CSV
+- 🔔 Add contact notes and reminders
+- 🌐 Multi-language support
+---
 ## 📦 Installation
 ---
 ```bash
